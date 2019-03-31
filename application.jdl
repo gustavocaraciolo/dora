@@ -1,0 +1,29 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType jwt
+    baseName dora
+    buildTool maven
+    cacheProvider ehcache
+    clientFramework angularX
+    clientPackageManager npm
+    databaseType sql
+    prodDatabaseType mysql
+    devDatabaseType mysql
+    enableSwaggerCodegen false
+    enableTranslation true
+    languages [en,pt-br]
+    nativeLanguage pt-br
+    packageName com.loja.dora
+    testFrameworks [cucumber, gatling, protractor]
+    useSass true
+    enableHibernateCache true
+    jhiPrefix jhi
+    dtoSuffix DTO
+    searchEngine elasticsearch
+    serverPort 8080
+    skipClient false
+  }
+
+entities *
+}
