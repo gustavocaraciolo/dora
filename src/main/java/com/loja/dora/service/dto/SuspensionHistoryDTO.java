@@ -1,8 +1,10 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
+
+import com.luulsolutions.luulpos.domain.enumeration.SuspensionType;
+
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.SuspensionType;
 
 /**
  * A DTO for the SuspensionHistory entity.
@@ -20,7 +22,6 @@ public class SuspensionHistoryDTO implements Serializable {
     private String resolutionNote;
 
     private ZonedDateTime unsuspensionDate;
-
 
     private Long profileId;
 

@@ -1,10 +1,12 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.Objects;
+
+import com.luulsolutions.luulpos.domain.enumeration.ShopAccountType;
+
 import javax.persistence.Lob;
-import com.loja.dora.domain.enumeration.ShopAccountType;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * A DTO for the Shop entity.
@@ -36,14 +38,13 @@ public class ShopDTO implements Serializable {
 
     @Lob
     private byte[] shopLogo;
-
     private String shopLogoContentType;
+
     private String shopLogoUrl;
 
     private Boolean active;
 
     private String currency;
-
 
     private Long companyId;
 

@@ -1,16 +1,10 @@
 package com.loja.dora.service.dto;
 
+import com.luulsolutions.luulpos.domain.enumeration.ShopAccountType;
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.ShopAccountType;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 /**
  * Criteria class for the Shop entity. This class is used in ShopResource to
@@ -72,6 +66,9 @@ public class ShopCriteria implements Serializable {
     private LongFilter discountsId;
 
     private LongFilter taxesId;
+
+    public ShopCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

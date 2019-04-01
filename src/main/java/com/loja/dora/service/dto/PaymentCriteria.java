@@ -1,17 +1,10 @@
 package com.loja.dora.service.dto;
 
+import com.luulsolutions.luulpos.domain.enumeration.PaymentStatus;
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.PaymentStatus;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.BigDecimalFilter;
-import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 /**
  * Criteria class for the Payment entity. This class is used in PaymentResource to
@@ -51,6 +44,9 @@ public class PaymentCriteria implements Serializable {
     private LongFilter paymentMethodId;
 
     private LongFilter orderId;
+
+    public PaymentCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

@@ -1,14 +1,16 @@
 package com.loja.dora.service.dto;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
+
+import com.luulsolutions.luulpos.domain.enumeration.Gender;
+import com.luulsolutions.luulpos.domain.enumeration.ProfileStatus;
+import com.luulsolutions.luulpos.domain.enumeration.ProfileType;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
-import javax.persistence.Lob;
-import com.loja.dora.domain.enumeration.ProfileType;
-import com.loja.dora.domain.enumeration.Gender;
-import com.loja.dora.domain.enumeration.ProfileStatus;
 
 /**
  * A DTO for the Profile entity.
@@ -47,20 +49,19 @@ public class ProfileDTO implements Serializable {
 
     @Lob
     private byte[] thumbnailPhoto;
-
     private String thumbnailPhotoContentType;
+
     private String thumbnailPhotoUrl;
 
     @Lob
     private byte[] fullPhoto;
-
     private String fullPhotoContentType;
+
     private String fullPhotoUrl;
 
     private Boolean active;
 
     private Long shopChangeId;
-
 
     private Long userId;
 

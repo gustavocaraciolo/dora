@@ -1,9 +1,11 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
+
+import com.luulsolutions.luulpos.domain.enumeration.PaymentStatus;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.PaymentStatus;
 
 /**
  * A DTO for the Payment entity.
@@ -23,7 +25,6 @@ public class PaymentDTO implements Serializable {
     private String curency;
 
     private String customerName;
-
 
     private Long shopId;
 

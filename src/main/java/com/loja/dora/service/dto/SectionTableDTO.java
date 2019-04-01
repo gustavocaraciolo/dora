@@ -1,4 +1,5 @@
 package com.loja.dora.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,7 +13,6 @@ public class SectionTableDTO implements Serializable {
     private Integer tableNumber;
 
     private String description;
-
 
     private Long shopSectionsId;
 

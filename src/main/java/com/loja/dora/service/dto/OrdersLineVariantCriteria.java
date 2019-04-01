@@ -1,15 +1,9 @@
 package com.loja.dora.service.dto;
 
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.BigDecimalFilter;
 
 /**
  * Criteria class for the OrdersLineVariant entity. This class is used in OrdersLineVariantResource to
@@ -42,6 +36,9 @@ public class OrdersLineVariantCriteria implements Serializable {
     private LongFilter ordersLineId;
 
     private LongFilter ordersLineExtrasId;
+
+    public OrdersLineVariantCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

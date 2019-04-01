@@ -1,14 +1,9 @@
 package com.loja.dora.service.dto;
 
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the EmailBalancer entity. This class is used in EmailBalancerResource to
@@ -37,6 +32,9 @@ public class EmailBalancerCriteria implements Serializable {
     private IntegerFilter relayPort;
 
     private BooleanFilter enabled;
+
+    public EmailBalancerCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

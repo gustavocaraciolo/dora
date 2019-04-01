@@ -1,16 +1,9 @@
 package com.loja.dora.service.dto;
 
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.BigDecimalFilter;
-import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 /**
  * Criteria class for the EmployeeTimesheet entity. This class is used in EmployeeTimesheetResource to
@@ -39,6 +32,9 @@ public class EmployeeTimesheetCriteria implements Serializable {
     private LongFilter profileId;
 
     private LongFilter shopId;
+
+    public EmployeeTimesheetCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

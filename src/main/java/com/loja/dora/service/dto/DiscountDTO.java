@@ -1,5 +1,6 @@
 package com.loja.dora.service.dto;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -21,7 +22,6 @@ public class DiscountDTO implements Serializable {
     private BigDecimal amount;
 
     private Boolean active;
-
 
     private Long shopId;
 

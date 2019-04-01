@@ -1,5 +1,6 @@
 package com.loja.dora.service.dto;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,7 +15,6 @@ public class ProductTypeDTO implements Serializable {
     private String productType;
 
     private String productTypeDescription;
-
 
     private Long shopId;
 

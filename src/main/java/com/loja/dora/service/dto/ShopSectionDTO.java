@@ -1,4 +1,5 @@
 package com.loja.dora.service.dto;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -19,7 +20,6 @@ public class ShopSectionDTO implements Serializable {
     private BigDecimal surchargeFlatAmount;
 
     private Boolean usePercentage;
-
 
     private Long shopId;
 

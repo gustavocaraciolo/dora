@@ -1,6 +1,7 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
+
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,6 @@ public class ShopDeviceDTO implements Serializable {
     private String deviceModel;
 
     private ZonedDateTime registeredDate;
-
 
     private Long shopId;
 

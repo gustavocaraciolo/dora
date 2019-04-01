@@ -1,16 +1,13 @@
 package com.loja.dora.service.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
-import com.loja.dora.domain.enumeration.SuspensionType;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
+import com.luulsolutions.luulpos.domain.enumeration.SuspensionType;
 import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.service.filter.ZonedDateTimeFilter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Criteria class for the SuspensionHistory entity. This class is used in SuspensionHistoryResource to
@@ -44,6 +41,9 @@ public class SuspensionHistoryCriteria implements Serializable {
     private LongFilter profileId;
 
     private LongFilter suspendedById;
+
+    public SuspensionHistoryCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

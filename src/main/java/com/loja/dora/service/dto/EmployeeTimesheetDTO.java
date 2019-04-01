@@ -1,7 +1,8 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -20,7 +21,6 @@ public class EmployeeTimesheetDTO implements Serializable {
     private Integer overTimeHoursWorked;
 
     private BigDecimal pay;
-
 
     private Long profileId;
 

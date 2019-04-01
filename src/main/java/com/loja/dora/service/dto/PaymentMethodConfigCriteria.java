@@ -1,14 +1,12 @@
 package com.loja.dora.service.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
 import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Criteria class for the PaymentMethodConfig entity. This class is used in PaymentMethodConfigResource to
@@ -33,6 +31,9 @@ public class PaymentMethodConfigCriteria implements Serializable {
     private BooleanFilter enabled;
 
     private LongFilter paymentMethodId;
+
+    public PaymentMethodConfigCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

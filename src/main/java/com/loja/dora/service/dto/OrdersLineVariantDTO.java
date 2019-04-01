@@ -1,9 +1,10 @@
 package com.loja.dora.service.dto;
-import javax.validation.constraints.*;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the OrdersLineVariant entity.
@@ -22,19 +23,18 @@ public class OrdersLineVariantDTO implements Serializable {
 
     @Lob
     private byte[] fullPhoto;
-
     private String fullPhotoContentType;
+
     private String fullPhotoUrl;
 
     @Lob
     private byte[] thumbnailPhoto;
-
     private String thumbnailPhotoContentType;
+
     private String thumbnailPhotoUrl;
 
     @NotNull
     private BigDecimal price;
-
 
     private Long ordersLineId;
 

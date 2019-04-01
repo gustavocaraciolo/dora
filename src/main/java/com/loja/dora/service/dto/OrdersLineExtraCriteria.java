@@ -1,14 +1,12 @@
 package com.loja.dora.service.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
 import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Criteria class for the OrdersLineExtra entity. This class is used in OrdersLineExtraResource to
@@ -37,6 +35,9 @@ public class OrdersLineExtraCriteria implements Serializable {
     private StringFilter thumbnailPhotoUrl;
 
     private LongFilter ordersLineVariantId;
+
+    public OrdersLineExtraCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

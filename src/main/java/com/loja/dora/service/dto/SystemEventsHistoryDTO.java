@@ -1,7 +1,8 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -23,7 +24,6 @@ public class SystemEventsHistoryDTO implements Serializable {
     private String eventEntityName;
 
     private Long eventEntityId;
-
 
     private Long triggedById;
 

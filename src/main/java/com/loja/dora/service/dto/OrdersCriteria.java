@@ -1,17 +1,10 @@
 package com.loja.dora.service.dto;
 
+import com.luulsolutions.luulpos.domain.enumeration.OrderStatus;
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.OrderStatus;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.BigDecimalFilter;
-import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 /**
  * Criteria class for the Orders entity. This class is used in OrdersResource to
@@ -69,6 +62,9 @@ public class OrdersCriteria implements Serializable {
     private LongFilter sectionTableId;
 
     private LongFilter shopId;
+
+    public OrdersCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

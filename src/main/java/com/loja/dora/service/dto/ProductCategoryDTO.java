@@ -1,7 +1,8 @@
 package com.loja.dora.service.dto;
+
+import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the ProductCategory entity.
@@ -16,16 +17,15 @@ public class ProductCategoryDTO implements Serializable {
 
     @Lob
     private byte[] imageFull;
-
     private String imageFullContentType;
+
     private String imageFullUrl;
 
     @Lob
     private byte[] imageThumb;
-
     private String imageThumbContentType;
-    private String imageThumbUrl;
 
+    private String imageThumbUrl;
 
     private Long shopId;
 

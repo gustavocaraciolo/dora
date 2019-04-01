@@ -1,5 +1,6 @@
 package com.loja.dora.service.dto;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,7 +17,6 @@ public class PaymentMethodDTO implements Serializable {
     private String description;
 
     private Boolean active;
-
 
     private Long shopId;
 

@@ -1,10 +1,12 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
+
+import com.luulsolutions.luulpos.domain.enumeration.OrderStatus;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.OrderStatus;
 
 /**
  * A DTO for the Orders entity.
@@ -38,7 +40,6 @@ public class OrdersDTO implements Serializable {
     private ZonedDateTime orderDate;
 
     private Boolean isVariantOrder;
-
 
     private Long paymentMethodId;
 

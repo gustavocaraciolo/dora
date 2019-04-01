@@ -1,7 +1,9 @@
 package com.loja.dora.service.dto;
+
+import com.luulsolutions.luulpos.domain.enumeration.ConfigType;
+
 import java.io.Serializable;
 import java.util.Objects;
-import com.loja.dora.domain.enumeration.ConfigType;
 
 /**
  * A DTO for the SystemConfig entity.
@@ -19,7 +21,6 @@ public class SystemConfigDTO implements Serializable {
     private String note;
 
     private Boolean enabled;
-
 
     private Long shopId;
 

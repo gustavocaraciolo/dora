@@ -1,4 +1,5 @@
 package com.loja.dora.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,7 +17,6 @@ public class PaymentMethodConfigDTO implements Serializable {
     private String note;
 
     private Boolean enabled;
-
 
     private Long paymentMethodId;
 

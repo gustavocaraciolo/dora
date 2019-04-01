@@ -1,6 +1,7 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
+
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -17,7 +18,6 @@ public class ShopChangeDTO implements Serializable {
     private String note;
 
     private ZonedDateTime changeDate;
-
 
     private Long shopId;
 

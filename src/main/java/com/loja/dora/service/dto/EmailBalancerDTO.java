@@ -1,4 +1,5 @@
 package com.loja.dora.service.dto;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -22,7 +23,6 @@ public class EmailBalancerDTO implements Serializable {
     private Integer relayPort;
 
     private Boolean enabled;
-
 
     public Long getId() {
         return id;

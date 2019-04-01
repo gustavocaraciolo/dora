@@ -1,15 +1,12 @@
 package com.loja.dora.service.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.service.filter.ZonedDateTimeFilter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Criteria class for the ShopChange entity. This class is used in ShopChangeResource to
@@ -36,6 +33,9 @@ public class ShopChangeCriteria implements Serializable {
     private LongFilter shopId;
 
     private LongFilter changedById;
+
+    public ShopChangeCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

@@ -1,10 +1,12 @@
 package com.loja.dora.service.dto;
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the Product entity.
@@ -27,14 +29,14 @@ public class ProductDTO implements Serializable {
 
     @Lob
     private byte[] productImageFull;
-
     private String productImageFullContentType;
+
     private String productImageFullUrl;
 
     @Lob
     private byte[] productImageThumb;
-
     private String productImageThumbContentType;
+
     private String productImageThumbUrl;
 
     private ZonedDateTime dateCreated;
@@ -48,7 +50,6 @@ public class ProductDTO implements Serializable {
     private Boolean active;
 
     private Boolean isVariantProduct;
-
 
     private Long productTypesId;
 

@@ -1,8 +1,9 @@
 package com.loja.dora.service.dto;
-import javax.validation.constraints.*;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the OrdersLine entity.
@@ -23,16 +24,15 @@ public class OrdersLineDTO implements Serializable {
 
     @Lob
     private byte[] thumbnailPhoto;
-
     private String thumbnailPhotoContentType;
+
     @Lob
     private byte[] fullPhoto;
-
     private String fullPhotoContentType;
+
     private String fullPhotoUrl;
 
     private String thumbnailPhotoUrl;
-
 
     private Long ordersId;
 

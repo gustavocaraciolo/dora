@@ -1,15 +1,13 @@
 package com.loja.dora.service.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
-import com.loja.dora.domain.enumeration.ConfigType;
+import com.luulsolutions.luulpos.domain.enumeration.ConfigType;
 import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Criteria class for the SystemConfig entity. This class is used in SystemConfigResource to
@@ -41,6 +39,9 @@ public class SystemConfigCriteria implements Serializable {
     private BooleanFilter enabled;
 
     private LongFilter shopId;
+
+    public SystemConfigCriteria() {
+    }
 
     public LongFilter getId() {
         return id;

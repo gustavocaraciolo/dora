@@ -1,14 +1,13 @@
 package com.loja.dora.service.dto;
-import io.swagger.annotations.ApiModel;
-import javax.validation.constraints.*;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the Company entity.
  */
-@ApiModel(description = "Entities START")
 public class CompanyDTO implements Serializable {
 
     private Long id;
@@ -22,12 +21,11 @@ public class CompanyDTO implements Serializable {
 
     @Lob
     private byte[] companyLogo;
-
     private String companyLogoContentType;
+
     private String companyLogoUrl;
 
     private Boolean active;
-
 
     public Long getId() {
         return id;

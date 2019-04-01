@@ -1,7 +1,8 @@
 package com.loja.dora.service.dto;
+
+import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the ProductExtra entity.
@@ -18,16 +19,15 @@ public class ProductExtraDTO implements Serializable {
 
     @Lob
     private byte[] fullPhoto;
-
     private String fullPhotoContentType;
+
     private String fullPhotoUrl;
 
     @Lob
     private byte[] thumbnailPhoto;
-
     private String thumbnailPhotoContentType;
-    private String thumbnailPhotoUrl;
 
+    private String thumbnailPhotoUrl;
 
     private Long productId;
 
