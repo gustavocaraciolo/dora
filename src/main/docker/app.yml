@@ -1,20 +1,36 @@
 version: '2'
 services:
-    dora-app:
-        image: dora
+    luulpos-app:
+        image: luulsolutions/luulpos
         environment:
             - _JAVA_OPTIONS=-Xmx512m -Xms256m
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - SPRING_DATASOURCE_URL=jdbc:mysql://luulpos-mysql:3306/dora?useUnicode=true&characterEncoding=utf8&useSSL=false
-            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATASOURCE_URL=jdbc:mysql://luulpos-mysql:3306/luulpos?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=30 # gives time for the database to boot before the application
             - SPRING_DATA_JEST_URI=http://luulpos-elasticsearch:9200
+            - AWS_S3_ENDPOINT=https://s3.eu-west-1.amazonaws.com
+            - AWS_S3_ACCESS_KEY=AKIAJMGGZCDL2Q22CLDQ
+            - AWS_S3_SECRET_KEY=ngOGiz7M01WGyFJzfQCai7kML3vLhlPwYw
+            - AWS_S3_BUCKET_NAME=lojadora
+            - MYSQL_USERNAME=root
+            - MYSQL_PASSWORD=1234
+            - MAIL_HOST=smtp.gmail.com
+            - MAIL_PORT=587
+            - MAIL_USERNAME=your_gmail@gmail.com
+            - MAIL_PASSWORD=add_here_your_gmail_password
+            - MAIL_PROTOCOL=smtp
+            - MAIL_SSL_TRUST=smtp.gmail.com
         ports:
             - 8080:8080
-    dora-mysql:
+            - 587:587
+        depends_on:
+            - luulpos-mysql
+            - luulpos-elasticsearch
+    luulpos-mysql:
         extends:
             file: mysql.yml
-            service: dora-mysql
-    dora-elasticsearch:
+            service: luulpos-mysql
+    luulpos-elasticsearch:
         extends:
             file: elasticsearch.yml
-            service: dora-elasticsearch
+            service: luulpos-elasticsearch
