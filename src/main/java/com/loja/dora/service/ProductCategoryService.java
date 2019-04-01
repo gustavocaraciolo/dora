@@ -7,7 +7,6 @@ import com.loja.dora.service.dto.ProductCategoryDTO;
 import com.loja.dora.service.mapper.ProductCategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
- * Service Implementation for managing ProductCategory.
+ * Service Implementation for managing ProductCategory. 
  */
 @Service
 @Transactional
@@ -46,6 +45,7 @@ public class ProductCategoryService {
      */
     public ProductCategoryDTO save(ProductCategoryDTO productCategoryDTO) {
         log.debug("Request to save ProductCategory : {}", productCategoryDTO);
+
         ProductCategory productCategory = productCategoryMapper.toEntity(productCategoryDTO);
         productCategory = productCategoryRepository.save(productCategory);
         ProductCategoryDTO result = productCategoryMapper.toDto(productCategory);
@@ -104,4 +104,11 @@ public class ProductCategoryService {
         return productCategorySearchRepository.search(queryStringQuery(query), pageable)
             .map(productCategoryMapper::toDto);
     }
+    
+    @Transactional(readOnly = true)
+	public Page<ProductCategoryDTO> findAllProductCategoryByShopId(Pageable pageable, Long shopId) {
+		log.debug("Request to findAllProductCategoryByShopId");
+        return productCategoryRepository.findAllByShopId(pageable, shopId)
+            .map(productCategoryMapper::toDto);
+	}
 }

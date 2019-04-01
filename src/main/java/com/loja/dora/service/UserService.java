@@ -10,8 +10,9 @@ import com.loja.dora.security.AuthoritiesConstants;
 import com.loja.dora.security.SecurityUtils;
 import com.loja.dora.service.dto.UserDTO;
 import com.loja.dora.service.util.RandomUtil;
-import com.loja.dora.web.rest.errors.*;
-
+import com.loja.dora.web.rest.errors.EmailAlreadyUsedException;
+import com.loja.dora.web.rest.errors.InvalidPasswordException;
+import com.loja.dora.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -128,7 +129,6 @@ public class UserService {
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
-
     private boolean removeNonActivatedUser(User existingUser){
         if (existingUser.getActivated()) {
              return false;
@@ -282,7 +282,7 @@ public class UserService {
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         userRepository
-            .findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS))
+            .findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(com.loja.dora.utils.Constants.MAX_DAYS_USER_REMOVED, ChronoUnit.DAYS))
             .forEach(user -> {
                 log.debug("Deleting not activated user {}", user.getLogin());
                 userRepository.delete(user);

@@ -7,7 +7,6 @@ import com.loja.dora.service.dto.ShopChangeDTO;
 import com.loja.dora.service.mapper.ShopChangeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing ShopChange.
@@ -46,6 +45,7 @@ public class ShopChangeService {
      */
     public ShopChangeDTO save(ShopChangeDTO shopChangeDTO) {
         log.debug("Request to save ShopChange : {}", shopChangeDTO);
+
         ShopChange shopChange = shopChangeMapper.toEntity(shopChangeDTO);
         shopChange = shopChangeRepository.save(shopChange);
         ShopChangeDTO result = shopChangeMapper.toDto(shopChange);
@@ -104,4 +104,10 @@ public class ShopChangeService {
         return shopChangeSearchRepository.search(queryStringQuery(query), pageable)
             .map(shopChangeMapper::toDto);
     }
+    
+	public ShopChangeDTO findFirstByShopId(Long shopId) {
+		log.debug("Request to get all findAllByShopId");
+		ShopChange shopChange = shopChangeRepository.findFirstByShopIdOrderByIdDesc(shopId);
+        return shopChangeMapper.toDto(shopChange);
+	}
 }

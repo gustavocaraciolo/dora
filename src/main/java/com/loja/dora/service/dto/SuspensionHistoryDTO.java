@@ -1,6 +1,6 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.SuspensionType;
+import com.loja.dora.domain.enumeration.SuspensionType;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;

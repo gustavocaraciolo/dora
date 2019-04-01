@@ -1,8 +1,8 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.config.Constants;
-import com.luulsolutions.luulpos.domain.Authority;
-import com.luulsolutions.luulpos.domain.User;
+import com.loja.dora.config.Constants;
+import com.loja.dora.domain.Authority;
+import com.loja.dora.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

@@ -1,8 +1,8 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.Gender;
-import com.luulsolutions.luulpos.domain.enumeration.ProfileStatus;
-import com.luulsolutions.luulpos.domain.enumeration.ProfileType;
+import com.loja.dora.domain.enumeration.Gender;
+import com.loja.dora.domain.enumeration.ProfileStatus;
+import com.loja.dora.domain.enumeration.ProfileType;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;

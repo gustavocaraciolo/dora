@@ -7,15 +7,15 @@ import com.loja.dora.service.dto.ProductVariantDTO;
 import com.loja.dora.service.mapper.ProductVariantMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing ProductVariant.
@@ -31,11 +31,19 @@ public class ProductVariantService {
     private final ProductVariantMapper productVariantMapper;
 
     private final ProductVariantSearchRepository productVariantSearchRepository;
+    
 
     public ProductVariantService(ProductVariantRepository productVariantRepository, ProductVariantMapper productVariantMapper, ProductVariantSearchRepository productVariantSearchRepository) {
         this.productVariantRepository = productVariantRepository;
         this.productVariantMapper = productVariantMapper;
         this.productVariantSearchRepository = productVariantSearchRepository;
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ProductVariantDTO> findAllByProductId(Long productId) {
+        log.debug("Request to get all findAllByProductId");
+        List <ProductVariant> productVariantList =  productVariantRepository.findAllByProductId(productId);
+           return productVariantMapper.toDto(productVariantList);
     }
 
     /**
@@ -46,6 +54,7 @@ public class ProductVariantService {
      */
     public ProductVariantDTO save(ProductVariantDTO productVariantDTO) {
         log.debug("Request to save ProductVariant : {}", productVariantDTO);
+
         ProductVariant productVariant = productVariantMapper.toEntity(productVariantDTO);
         productVariant = productVariantRepository.save(productVariant);
         ProductVariantDTO result = productVariantMapper.toDto(productVariant);

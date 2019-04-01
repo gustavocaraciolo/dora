@@ -7,15 +7,15 @@ import com.loja.dora.service.dto.SectionTableDTO;
 import com.loja.dora.service.mapper.SectionTableMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing SectionTable.
@@ -46,6 +46,7 @@ public class SectionTableService {
      */
     public SectionTableDTO save(SectionTableDTO sectionTableDTO) {
         log.debug("Request to save SectionTable : {}", sectionTableDTO);
+
         SectionTable sectionTable = sectionTableMapper.toEntity(sectionTableDTO);
         sectionTable = sectionTableRepository.save(sectionTable);
         SectionTableDTO result = sectionTableMapper.toDto(sectionTable);
@@ -104,4 +105,11 @@ public class SectionTableService {
         return sectionTableSearchRepository.search(queryStringQuery(query), pageable)
             .map(sectionTableMapper::toDto);
     }
+    
+    @Transactional(readOnly = true)
+   	public List<SectionTableDTO> findAllByShopSectionsId(Long shopSectionId) {
+   		log.debug("Request to get all SectionTables");
+           List<SectionTable> shopSectionList = sectionTableRepository.findAllByShopSectionsId(shopSectionId);
+               return sectionTableMapper.toDto(shopSectionList);
+   	}
 }

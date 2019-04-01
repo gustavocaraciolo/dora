@@ -7,15 +7,15 @@ import com.loja.dora.service.dto.ProductExtraDTO;
 import com.loja.dora.service.mapper.ProductExtraMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing ProductExtra.
@@ -46,6 +46,7 @@ public class ProductExtraService {
      */
     public ProductExtraDTO save(ProductExtraDTO productExtraDTO) {
         log.debug("Request to save ProductExtra : {}", productExtraDTO);
+
         ProductExtra productExtra = productExtraMapper.toEntity(productExtraDTO);
         productExtra = productExtraRepository.save(productExtra);
         ProductExtraDTO result = productExtraMapper.toDto(productExtra);
@@ -103,5 +104,12 @@ public class ProductExtraService {
         log.debug("Request to search for a page of ProductExtras for query {}", query);
         return productExtraSearchRepository.search(queryStringQuery(query), pageable)
             .map(productExtraMapper::toDto);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ProductExtraDTO> findAllByProductId(Long productId) {
+        log.debug("Request to get all findAllByProductId");
+         List <ProductExtra> productExtraList = productExtraRepository.findAllByProductId(productId);
+         return productExtraMapper.toDto(productExtraList);
     }
 }

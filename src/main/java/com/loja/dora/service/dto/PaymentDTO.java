@@ -1,6 +1,6 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.PaymentStatus;
+import com.loja.dora.domain.enumeration.PaymentStatus;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

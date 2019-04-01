@@ -7,7 +7,6 @@ import com.loja.dora.service.dto.PaymentDTO;
 import com.loja.dora.service.mapper.PaymentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Payment.
@@ -38,6 +37,19 @@ public class PaymentService {
         this.paymentSearchRepository = paymentSearchRepository;
     }
 
+
+	public Page<PaymentDTO> findAllByOrderId(Pageable pageable, Long orderId) {
+		log.debug("Request to get all findAllByOrderId");
+        return paymentRepository.findAllByOrderId(pageable,orderId)
+            .map(paymentMapper::toDto);
+	}
+	
+	public Page<PaymentDTO> findAllByShopId(Pageable pageable, Long shopId) {
+		log.debug("Request to get all findAllByOrderId");
+        return paymentRepository.findAllByShopId(pageable,shopId)
+            .map(paymentMapper::toDto);
+	}
+    
     /**
      * Save a payment.
      *
@@ -46,6 +58,7 @@ public class PaymentService {
      */
     public PaymentDTO save(PaymentDTO paymentDTO) {
         log.debug("Request to save Payment : {}", paymentDTO);
+
         Payment payment = paymentMapper.toEntity(paymentDTO);
         payment = paymentRepository.save(payment);
         PaymentDTO result = paymentMapper.toDto(payment);

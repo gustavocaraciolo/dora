@@ -1,6 +1,6 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.ShopAccountType;
+import com.loja.dora.domain.enumeration.ShopAccountType;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;

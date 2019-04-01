@@ -7,15 +7,15 @@ import com.loja.dora.service.dto.ShopSectionDTO;
 import com.loja.dora.service.mapper.ShopSectionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing ShopSection.
@@ -46,6 +46,7 @@ public class ShopSectionService {
      */
     public ShopSectionDTO save(ShopSectionDTO shopSectionDTO) {
         log.debug("Request to save ShopSection : {}", shopSectionDTO);
+
         ShopSection shopSection = shopSectionMapper.toEntity(shopSectionDTO);
         shopSection = shopSectionRepository.save(shopSection);
         ShopSectionDTO result = shopSectionMapper.toDto(shopSection);
@@ -104,4 +105,10 @@ public class ShopSectionService {
         return shopSectionSearchRepository.search(queryStringQuery(query), pageable)
             .map(shopSectionMapper::toDto);
     }
+    
+    public List<ShopSectionDTO> findAllByShopId(Long shopId) {
+		  log.debug("Request to get all ShopSections by Shop ID");
+		  List<ShopSection> shopSectionList = shopSectionRepository.findAllByShopId(shopId);
+	         return    shopSectionMapper.toDto(shopSectionList);
+	}
 }

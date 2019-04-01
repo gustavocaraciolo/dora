@@ -1,6 +1,6 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.ConfigType;
+import com.loja.dora.domain.enumeration.ConfigType;
 
 import java.io.Serializable;
 import java.util.Objects;

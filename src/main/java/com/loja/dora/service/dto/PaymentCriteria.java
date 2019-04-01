@@ -1,6 +1,6 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.PaymentStatus;
+import com.loja.dora.domain.enumeration.PaymentStatus;
 import io.github.jhipster.service.filter.*;
 
 import java.io.Serializable;

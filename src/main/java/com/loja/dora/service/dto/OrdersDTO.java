@@ -1,7 +1,6 @@
 package com.loja.dora.service.dto;
 
-import com.luulsolutions.luulpos.domain.enumeration.OrderStatus;
-
+import com.loja.dora.domain.enumeration.OrderStatus;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;

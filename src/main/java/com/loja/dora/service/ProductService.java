@@ -1,21 +1,27 @@
 package com.loja.dora.service;
 
+import com.loja.dora.domain.Discount;
 import com.loja.dora.domain.Product;
+import com.loja.dora.domain.Tax;
 import com.loja.dora.repository.ProductRepository;
 import com.loja.dora.repository.search.ProductSearchRepository;
+import com.loja.dora.repository.search.ProfileSearchRepository;
 import com.loja.dora.service.dto.ProductDTO;
-import com.loja.dora.service.mapper.ProductMapper;
+import com.loja.dora.service.dto.ProductDTOFull;
+import com.loja.dora.service.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Product.
@@ -31,12 +37,110 @@ public class ProductService {
     private final ProductMapper productMapper;
 
     private final ProductSearchRepository productSearchRepository;
+    
+    @Autowired
+    ProfileMapper profileMapper;
+    
+    @Autowired
+    UserMapper userMapper;
+    
+    @Autowired
+    ShopMapper shopMapper;
+    
+    @Autowired
+    CompanyMapper companyMapper;
+    
+    @Autowired
+    ProductCategoryMapper productCategoryMapper;
+
+    @Autowired
+    ProfileSearchRepository profileSearchRepository;
+    
+    @Autowired
+    ShopSectionService shopSectionService;
+    
+    @Autowired
+    SectionTableService sectionTableService;
+    
+    @Autowired
+    SystemConfigService systemConfigService;
+    
+    @Autowired
+    PaymentMethodService paymentMethodService;
+    
+    @Autowired
+    PaymentMethodConfigService paymentMethodConfigService;
+    
+    @Autowired
+    DiscountMapper  discountMapper;
+    
+    @Autowired
+    TaxMapper  taxMapper;
+    
+    @Autowired
+    ProductVariantService productVariantService;
+    
+    @Autowired
+    ProductExtraService productExtraService;
 
     public ProductService(ProductRepository productRepository, ProductMapper productMapper, ProductSearchRepository productSearchRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.productSearchRepository = productSearchRepository;
     }
+    
+    
+
+	public Page<ProductDTO> findAllByProductCategoryId(Pageable pageable, Long categoryId) {
+		log.debug("Request to get all Products by Product Category ID");
+            return productRepository.findAllByCategoryId(pageable,categoryId)
+                    .map(productMapper::toDto);
+	}
+
+	public List<ProductDTOFull> findAllByShopId(Long shopId) {
+		log.debug("Request to get all Products by Product findAllByShopId ");
+		List<ProductDTOFull> productDTOFullList = new ArrayList<ProductDTOFull>();
+        List<Product> productList =  productRepository.findAllByShopId(shopId);
+        productList.forEach(product -> {
+        	ProductDTOFull profileDTOFull = new ProductDTOFull();
+        	profileDTOFull.setProductDTO(productMapper.toDto(product));
+        	//profileDTOFull.setShopDTO(shopMapper.toDto(product.getShop()));
+        	//profileDTOFull.setCompanyDTO(companyMapper.toDto(product.getShop().getCompany()));
+        	List <Discount> discountList = new ArrayList<Discount>();
+        	discountList.addAll(product.getShop().getDiscounts());
+        	profileDTOFull.setDiscountDTOList(discountMapper.toDto(discountList));
+     
+        	List <Tax> taxList = new ArrayList<Tax>();
+        	taxList.addAll(product.getShop().getTaxes());
+        	profileDTOFull.setTaxDTOList(taxMapper.toDto(taxList));
+        	//profileDTOFull.setPaymentMethodList(paymentMethodService.findAllByShopId(product.getShop().getId()));
+        	//List <PaymentMethodConfigDTO> paymentMethodConfigList = new ArrayList<PaymentMethodConfigDTO>();
+        	//profileDTOFull.getPaymentMethodList().forEach(paymentMethod -> {
+        	//	paymentMethodConfigList.addAll(paymentMethodConfigService.findAllByPaymentMethodId(paymentMethod.getId()));
+        		
+        	//});
+        	
+        	//profileDTOFull.setPaymentMethodConfigDTOList(paymentMethodConfigList);
+        	
+        	//List <ProductCategoryDTO> productCategoryDTOList = new ArrayList<ProductCategoryDTO>();
+        	
+        	//productCategoryDTOList.add(productCategoryMapper.toDto(product.getCategory()));
+        	//profileDTOFull.setProductCategoryDTOList(productCategoryDTOList);
+        	
+        	profileDTOFull.setProductVariantsDTOList(productVariantService.findAllByProductId(product.getId()));
+        	
+        	profileDTOFull.setProductExtraDTOList(productExtraService.findAllByProductId(product.getId()));
+        	
+        	productDTOFullList.add(profileDTOFull);
+       
+        });
+        
+        
+      
+                
+        return productDTOFullList;
+	}
+	
 
     /**
      * Save a product.
@@ -46,6 +150,7 @@ public class ProductService {
      */
     public ProductDTO save(ProductDTO productDTO) {
         log.debug("Request to save Product : {}", productDTO);
+
         Product product = productMapper.toEntity(productDTO);
         product = productRepository.save(product);
         ProductDTO result = productMapper.toDto(product);
