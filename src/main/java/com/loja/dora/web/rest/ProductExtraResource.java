@@ -1,15 +1,24 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.service.ProductExtraQueryService;
 import com.loja.dora.service.ProductExtraService;
+import com.loja.dora.service.ProductService;
+import com.loja.dora.service.ShopChangeService;
+import com.loja.dora.service.dto.ProductDTO;
+import com.loja.dora.service.dto.ProductExtraCriteria;
+import com.loja.dora.service.dto.ProductExtraDTO;
+import com.loja.dora.service.s3.S3Service;
+import com.loja.dora.utils.CommonUtils;
+import com.loja.dora.utils.Constants;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.ProductExtraDTO;
-import com.loja.dora.service.dto.ProductExtraCriteria;
-import com.loja.dora.service.ProductExtraQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,12 +27,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ProductExtra.
@@ -39,10 +44,33 @@ public class ProductExtraResource {
     private final ProductExtraService productExtraService;
 
     private final ProductExtraQueryService productExtraQueryService;
+    
+
+    @Autowired
+    ProductService productService;
+   
+    @Autowired
+    ShopChangeService shopChangeService;
+    
+    @Autowired
+    private S3Service s3Service;
 
     public ProductExtraResource(ProductExtraService productExtraService, ProductExtraQueryService productExtraQueryService) {
         this.productExtraService = productExtraService;
         this.productExtraQueryService = productExtraQueryService;
+    }
+
+   
+    /**
+    * GET  /product-extras/count : count all the productExtras.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/product-extras/count")
+    public ResponseEntity<Long> countProductExtras(ProductExtraCriteria criteria) {
+        log.debug("REST request to count ProductExtras by criteria: {}", criteria);
+        return ResponseEntity.ok().body(productExtraQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -59,6 +87,31 @@ public class ProductExtraResource {
             throw new BadRequestAlertException("A new productExtra cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ProductExtraDTO result = productExtraService.save(productExtraDTO);
+        Optional <ProductDTO> productDTO = productService.findOne(productExtraDTO.getProductId());
+        CommonUtils.saveShopChange(shopChangeService, productDTO.get().getShopId(), "ProductExtra", "New ProductExtra created", productDTO.get().getShopShopName()); 
+       
+        String fileName = "ProductExtra" + result.getId()  + ".png";
+        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setFullPhotoUrl(url);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productExtraDTO.getFullPhoto()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        ProductExtraDTO result2 = productExtraService.save(result);
+        result2.setFullPhoto(null);
+        result2.setFullPhotoContentType(null);
+        
+        String fileName2 = "ProductExtraThumb" + result.getId()  + ".png";
+        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        result2.setThumbnailPhotoUrl(url2);
+        byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productExtraDTO.getThumbnailPhoto()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
+
+        CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
+        result2.setThumbnailPhoto(null);
+        result2.setThumbnailPhotoContentType(null);
+        
+  
+        productExtraService.save(result2);
+        
         return ResponseEntity.created(new URI("/api/product-extras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,6 +133,32 @@ public class ProductExtraResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ProductExtraDTO result = productExtraService.save(productExtraDTO);
+        Optional <ProductDTO> productDTO = productService.findOne(productExtraDTO.getProductId());
+        CommonUtils.saveShopChange(shopChangeService, productDTO.get().getShopId(), "ProductExtra", "Existing ProductExtra updated", productDTO.get().getShopShopName()); 
+       
+        if (productExtraDTO.getFullPhoto() != null) {
+        String fileName = "ProductExtra" + result.getId()  + ".png";
+        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setFullPhotoUrl(url);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productExtraDTO.getFullPhoto()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        result.setFullPhoto(null);
+        result.setFullPhotoContentType(null);
+        productExtraService.save(result);
+        }
+        
+        if (productExtraDTO.getThumbnailPhoto() != null) {
+        String fileName2 = "ProductExtraThumb" + result.getId()  + ".png";
+        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        ProductExtraDTO result2 = productExtraService.save(result);
+        result2.setThumbnailPhotoUrl(url2);
+        byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productExtraDTO.getThumbnailPhoto()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
+        CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
+        result2.setThumbnailPhoto(null);
+        result2.setThumbnailPhotoContentType(null);
+        productExtraService.save(result2);
+        }
+        
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, productExtraDTO.getId().toString()))
             .body(result);
@@ -89,27 +168,15 @@ public class ProductExtraResource {
      * GET  /product-extras : get all the productExtras.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of productExtras in body
      */
     @GetMapping("/product-extras")
-    public ResponseEntity<List<ProductExtraDTO>> getAllProductExtras(ProductExtraCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get ProductExtras by criteria: {}", criteria);
-        Page<ProductExtraDTO> page = productExtraQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<ProductExtraDTO>> getAllProductExtras(Pageable pageable) {
+        log.debug("REST request to get a page of ProductExtras");
+        Pageable pageable2 =  PageRequest.of(pageable.getPageNumber(),2000);
+        Page<ProductExtraDTO> page = productExtraService.findAll(pageable2);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/product-extras");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /product-extras/count : count all the productExtras.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/product-extras/count")
-    public ResponseEntity<Long> countProductExtras(ProductExtraCriteria criteria) {
-        log.debug("REST request to count ProductExtras by criteria: {}", criteria);
-        return ResponseEntity.ok().body(productExtraQueryService.countByCriteria(criteria));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -134,7 +201,15 @@ public class ProductExtraResource {
     @DeleteMapping("/product-extras/{id}")
     public ResponseEntity<Void> deleteProductExtra(@PathVariable Long id) {
         log.debug("REST request to delete ProductExtra : {}", id);
+        Optional<ProductExtraDTO> productExtraDTO = productExtraService.findOne(id);
+        Optional <ProductDTO> productDTO = productService.findOne(productExtraDTO.get().getProductId());
+        long shopId = productDTO.get().getShopId();
+        String shopName = productDTO.get().getShopShopName();
         productExtraService.delete(id);
+        CommonUtils.saveShopChange(shopChangeService, shopId, "ProductExtra", "Existing ProductExtra deleted", shopName); 
+        CommonUtils.deleteFromS3("ProductExtra" + id + ".png", s3Service.getAmazonS3());
+        CommonUtils.deleteFromS3("ProductExtraThumb" + id + ".png", s3Service.getAmazonS3());
+
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -151,7 +226,6 @@ public class ProductExtraResource {
         log.debug("REST request to search for a page of ProductExtras for query {}", query);
         Page<ProductExtraDTO> page = productExtraService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/product-extras");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
 }

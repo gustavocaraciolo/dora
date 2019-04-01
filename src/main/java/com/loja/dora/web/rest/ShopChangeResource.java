@@ -1,11 +1,12 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.service.ShopChangeQueryService;
 import com.loja.dora.service.ShopChangeService;
+import com.loja.dora.service.dto.ShopChangeCriteria;
+import com.loja.dora.service.dto.ShopChangeDTO;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.ShopChangeDTO;
-import com.loja.dora.service.dto.ShopChangeCriteria;
-import com.loja.dora.service.ShopChangeQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ShopChange.
@@ -151,7 +148,18 @@ public class ShopChangeResource {
         log.debug("REST request to search for a page of ShopChanges for query {}", query);
         Page<ShopChangeDTO> page = shopChangeService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/shop-changes");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    @GetMapping("/shop-changes-by-shop-id/{shopId}")
+    public ResponseEntity<Long> getLastShopChangeIdByShopId(@PathVariable Long shopId) {
+        log.debug("REST request to get a page of getLastShopChangeIdByShopId");
+        ShopChangeDTO shopChangeDTO = shopChangeService.findFirstByShopId(shopId);
+        Long lastRecord = 0L;
+        if (shopChangeDTO != null ) {
+        	lastRecord = shopChangeDTO.getId();
+        }
+        return new ResponseEntity<>(lastRecord, HttpStatus.OK);
     }
 
 }

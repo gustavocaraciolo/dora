@@ -1,15 +1,23 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.security.SecurityUtils;
+import com.loja.dora.service.ShopChangeService;
+import com.loja.dora.service.ShopQueryService;
 import com.loja.dora.service.ShopService;
+import com.loja.dora.service.dto.ShopCriteria;
+import com.loja.dora.service.dto.ShopDTO;
+import com.loja.dora.service.s3.S3Service;
+import com.loja.dora.utils.CommonUtils;
+import com.loja.dora.utils.Constants;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.ShopDTO;
-import com.loja.dora.service.dto.ShopCriteria;
-import com.loja.dora.service.ShopQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +27,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Shop.
@@ -40,11 +45,32 @@ public class ShopResource {
     private final ShopService shopService;
 
     private final ShopQueryService shopQueryService;
+    
+    @Autowired
+    ShopChangeService shopChangeService;
+    
+    @Autowired
+    private S3Service s3Service;
 
     public ShopResource(ShopService shopService, ShopQueryService shopQueryService) {
         this.shopService = shopService;
         this.shopQueryService = shopQueryService;
     }
+
+  
+
+    /**
+    * GET  /shops/count : count all the shops.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/shops/count")
+    public ResponseEntity<Long> countShops(ShopCriteria criteria) {
+        log.debug("REST request to count Shops by criteria: {}", criteria);
+        return ResponseEntity.ok().body(shopQueryService.countByCriteria(criteria));
+    }
+
 
     /**
      * POST  /shops : Create a new shop.
@@ -59,7 +85,28 @@ public class ShopResource {
         if (shopDTO.getId() != null) {
             throw new BadRequestAlertException("A new shop cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ShopDTO result = shopService.save(shopDTO);
+        /*  --START--
+         * ADD DEFAULT VALUES TO THE FIELDS BELOW
+         */
+        shopDTO.setCreatedDate(ZonedDateTime.now());
+        shopDTO.setActive(true);
+        shopDTO.setApprovalDate(ZonedDateTime.now());
+        shopDTO.setApprovedByFirstName(SecurityUtils.getCurrentUserLogin().get());
+        
+        /*  --END-- */
+        ShopDTO result = shopService.save(shopDTO); 
+        CommonUtils.saveShopChange(shopChangeService, shopDTO.getCompanyId(), "Shop", "New Shop created", shopDTO.getShopName()); 
+        
+        String fileName = "Shop" + result.getId()  + ".png";
+        String shopLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setShopLogoUrl(shopLogoUrl);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(shopDTO.getShopLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        ShopDTO result2 = shopService.save(result);
+        result2.setShopLogo(null);
+        result2.setShopLogoContentType(null);
+         shopService.save(result2);
+        
         return ResponseEntity.created(new URI("/api/shops/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,6 +128,19 @@ public class ShopResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ShopDTO result = shopService.save(shopDTO);
+        CommonUtils.saveShopChange(shopChangeService, shopDTO.getId(), "Shop", "Existing Shop updated", shopDTO.getShopName()); 
+       if (shopDTO.getShopLogo() != null) {
+        String fileName = "Shop" + result.getId()  + ".png";
+        String shopLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setShopLogoUrl(shopLogoUrl);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(shopDTO.getShopLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        ShopDTO result2 = shopService.save(result);
+        result2.setShopLogo(null);
+        result2.setShopLogoContentType(null);
+         shopService.save(result2);
+       }
+        
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, shopDTO.getId().toString()))
             .body(result);
@@ -90,27 +150,15 @@ public class ShopResource {
      * GET  /shops : get all the shops.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of shops in body
      */
     @GetMapping("/shops")
-    public ResponseEntity<List<ShopDTO>> getAllShops(ShopCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Shops by criteria: {}", criteria);
-        Page<ShopDTO> page = shopQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<ShopDTO>> getAllShops(Pageable pageable) {
+        log.debug("REST request to get a page of Shops");
+        Pageable pageable2 =  PageRequest.of(pageable.getPageNumber(),2000);
+        Page<ShopDTO> page = shopService.findAll(pageable2);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/shops");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /shops/count : count all the shops.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/shops/count")
-    public ResponseEntity<Long> countShops(ShopCriteria criteria) {
-        log.debug("REST request to count Shops by criteria: {}", criteria);
-        return ResponseEntity.ok().body(shopQueryService.countByCriteria(criteria));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -135,7 +183,12 @@ public class ShopResource {
     @DeleteMapping("/shops/{id}")
     public ResponseEntity<Void> deleteShop(@PathVariable Long id) {
         log.debug("REST request to delete Shop : {}", id);
+        Optional<ShopDTO> shopDTO = shopService.findOne(id);
+        long shopId = shopDTO.get().getId();
+        String shopName = shopDTO.get().getShopName();
         shopService.delete(id);
+        CommonUtils.saveShopChange(shopChangeService, shopId, "Shop", "Existing Shop deleted", shopName); 
+        CommonUtils.deleteFromS3("Shop" + id + ".png", s3Service.getAmazonS3());        
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -152,7 +205,7 @@ public class ShopResource {
         log.debug("REST request to search for a page of Shops for query {}", query);
         Page<ShopDTO> page = shopService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/shops");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

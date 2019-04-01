@@ -1,11 +1,13 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.service.OrdersQueryService;
 import com.loja.dora.service.OrdersService;
+import com.loja.dora.service.dto.OrdersCriteria;
+import com.loja.dora.service.dto.OrdersDTO;
+import com.loja.dora.service.dto.OrdersDTOFull;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.OrdersDTO;
-import com.loja.dora.service.dto.OrdersCriteria;
-import com.loja.dora.service.OrdersQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Orders.
@@ -45,6 +43,52 @@ public class OrdersResource {
         this.ordersService = ordersService;
         this.ordersQueryService = ordersQueryService;
     }
+    
+    /**
+     * POST  /orders : Create a new orders.
+     *
+     * @param ordersDTO the ordersDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new ordersDTO, or with status 400 (Bad Request) if the orders has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/orders-full")
+    public ResponseEntity<OrdersDTOFull> createOrdersFull(@Valid @RequestBody OrdersDTOFull ordersDTOFull) throws URISyntaxException {
+        log.debug("REST request to save Orders : {}", ordersDTOFull);
+        if (ordersDTOFull.getId() != null) {
+            throw new BadRequestAlertException("A new orders cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        
+        if(ordersDTOFull.getOrderDTO() == null) {
+            throw new BadRequestAlertException("Missing OrdersDTO ", ENTITY_NAME, "missing_ordersDTO");
+
+        }
+        
+        if(ordersDTOFull.getOrdersLineDTOFullList() == null || ordersDTOFull.getOrdersLineDTOFullList().size() < 1) {
+            throw new BadRequestAlertException("Missing OrdersLineDTO ", ENTITY_NAME, "missing_ordersline");
+
+        }
+        
+        if(ordersDTOFull.getOrdersLineDTOFullList().get(0).getOrdersLineVariantsDTOFullList() == null || ordersDTOFull.getOrdersLineDTOFullList().get(0).getOrdersLineVariantsDTOFullList().size() < 1) {
+            throw new BadRequestAlertException("Missing OrdersLineVariantDTO ", ENTITY_NAME, "missing_orderslinevariant");
+
+        }
+        
+        
+        
+        OrdersDTOFull result = ordersService.saveOdersDTOFull(ordersDTOFull);
+        return ResponseEntity.created(new URI("/api/orders-full/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+    
+    @GetMapping("/orders-full/{shopId}/{orderStatus}")
+    public ResponseEntity<List<OrdersDTOFull>> getAllOrders(Pageable pageable, @PathVariable Long shopId, @PathVariable String orderStatus ) {
+        log.debug("REST request to get a page of Orders");
+        List<OrdersDTOFull> list = ordersService.findAllOrdersFull(pageable,shopId,orderStatus);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
 
     /**
      * POST  /orders : Create a new orders.
@@ -152,7 +196,7 @@ public class OrdersResource {
         log.debug("REST request to search for a page of Orders for query {}", query);
         Page<OrdersDTO> page = ordersService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/orders");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

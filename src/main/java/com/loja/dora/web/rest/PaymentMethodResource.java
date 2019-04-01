@@ -1,15 +1,20 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.service.PaymentMethodQueryService;
 import com.loja.dora.service.PaymentMethodService;
+import com.loja.dora.service.ShopChangeService;
+import com.loja.dora.service.dto.PaymentMethodCriteria;
+import com.loja.dora.service.dto.PaymentMethodDTO;
+import com.loja.dora.utils.CommonUtils;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.PaymentMethodDTO;
-import com.loja.dora.service.dto.PaymentMethodCriteria;
-import com.loja.dora.service.PaymentMethodQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing PaymentMethod.
@@ -40,10 +41,27 @@ public class PaymentMethodResource {
     private final PaymentMethodService paymentMethodService;
 
     private final PaymentMethodQueryService paymentMethodQueryService;
+    
+    @Autowired
+    ShopChangeService shopChangeService;
 
     public PaymentMethodResource(PaymentMethodService paymentMethodService, PaymentMethodQueryService paymentMethodQueryService) {
         this.paymentMethodService = paymentMethodService;
         this.paymentMethodQueryService = paymentMethodQueryService;
+    }
+
+  
+
+    /**
+    * GET  /payment-methods/count : count all the paymentMethods.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/payment-methods/count")
+    public ResponseEntity<Long> countPaymentMethods(PaymentMethodCriteria criteria) {
+        log.debug("REST request to count PaymentMethods by criteria: {}", criteria);
+        return ResponseEntity.ok().body(paymentMethodQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -60,6 +78,8 @@ public class PaymentMethodResource {
             throw new BadRequestAlertException("A new paymentMethod cannot already have an ID", ENTITY_NAME, "idexists");
         }
         PaymentMethodDTO result = paymentMethodService.save(paymentMethodDTO);
+        CommonUtils.saveShopChange(shopChangeService, paymentMethodDTO.getShopId(), "PaymentMethod", "New PaymentMethod created", paymentMethodDTO.getShopShopName()); 
+
         return ResponseEntity.created(new URI("/api/payment-methods/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,6 +101,7 @@ public class PaymentMethodResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         PaymentMethodDTO result = paymentMethodService.save(paymentMethodDTO);
+        CommonUtils.saveShopChange(shopChangeService, paymentMethodDTO.getShopId(), "PaymentMethod", "Existing PaymentMethod updated", paymentMethodDTO.getShopShopName()); 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentMethodDTO.getId().toString()))
             .body(result);
@@ -90,27 +111,15 @@ public class PaymentMethodResource {
      * GET  /payment-methods : get all the paymentMethods.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of paymentMethods in body
      */
     @GetMapping("/payment-methods")
-    public ResponseEntity<List<PaymentMethodDTO>> getAllPaymentMethods(PaymentMethodCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get PaymentMethods by criteria: {}", criteria);
-        Page<PaymentMethodDTO> page = paymentMethodQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<PaymentMethodDTO>> getAllPaymentMethods(Pageable pageable) {
+        log.debug("REST request to get a page of PaymentMethods");
+        Pageable pageable2 =  PageRequest.of(pageable.getPageNumber(),2000);
+        Page<PaymentMethodDTO> page = paymentMethodService.findAll(pageable2);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-methods");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /payment-methods/count : count all the paymentMethods.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/payment-methods/count")
-    public ResponseEntity<Long> countPaymentMethods(PaymentMethodCriteria criteria) {
-        log.debug("REST request to count PaymentMethods by criteria: {}", criteria);
-        return ResponseEntity.ok().body(paymentMethodQueryService.countByCriteria(criteria));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -135,7 +144,11 @@ public class PaymentMethodResource {
     @DeleteMapping("/payment-methods/{id}")
     public ResponseEntity<Void> deletePaymentMethod(@PathVariable Long id) {
         log.debug("REST request to delete PaymentMethod : {}", id);
+        Optional<PaymentMethodDTO> paymentMethodDTO = paymentMethodService.findOne(id);
+        long shopId = paymentMethodDTO.get().getShopId();
+        String shopName = paymentMethodDTO.get().getShopShopName();
         paymentMethodService.delete(id);
+        CommonUtils.saveShopChange(shopChangeService, shopId, "PaymentMethod", "Existing PaymentMethod deleted", shopName); 
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -152,7 +165,7 @@ public class PaymentMethodResource {
         log.debug("REST request to search for a page of PaymentMethods for query {}", query);
         Page<PaymentMethodDTO> page = paymentMethodService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/payment-methods");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    } 
 
 }

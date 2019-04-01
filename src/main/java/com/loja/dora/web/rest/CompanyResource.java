@@ -1,15 +1,22 @@
 package com.loja.dora.web.rest;
+
+
+import com.loja.dora.service.CompanyQueryService;
 import com.loja.dora.service.CompanyService;
+import com.loja.dora.service.dto.CompanyCriteria;
+import com.loja.dora.service.dto.CompanyDTO;
+import com.loja.dora.service.s3.S3Service;
+import com.loja.dora.utils.CommonUtils;
+import com.loja.dora.utils.Constants;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.CompanyDTO;
-import com.loja.dora.service.dto.CompanyCriteria;
-import com.loja.dora.service.CompanyQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Company.
@@ -40,10 +43,27 @@ public class CompanyResource {
     private final CompanyService companyService;
 
     private final CompanyQueryService companyQueryService;
+    
+    @Autowired
+    private S3Service s3Service;
 
     public CompanyResource(CompanyService companyService, CompanyQueryService companyQueryService) {
         this.companyService = companyService;
         this.companyQueryService = companyQueryService;
+    }
+
+  
+
+    /**
+    * GET  /companies/count : count all the companies.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/companies/count")
+    public ResponseEntity<Long> countCompanies(CompanyCriteria criteria) {
+        log.debug("REST request to count Companies by criteria: {}", criteria);
+        return ResponseEntity.ok().body(companyQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -58,11 +78,21 @@ public class CompanyResource {
         log.debug("REST request to save Company : {}", companyDTO);
         if (companyDTO.getId() != null) {
             throw new BadRequestAlertException("A new company cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+        } 
+        
         CompanyDTO result = companyService.save(companyDTO);
+        String fileName = "Company" + result.getId()  + ".png";
+        String companyLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setCompanyLogoUrl(companyLogoUrl);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(companyDTO.getCompanyLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        CompanyDTO result2 = companyService.save(result);
+        result2.setCompanyLogo(null);
+        result2.setCompanyLogoContentType(null);
+        companyService.save(result2);
         return ResponseEntity.created(new URI("/api/companies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(result); 
     }
 
     /**
@@ -80,7 +110,19 @@ public class CompanyResource {
         if (companyDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        
         CompanyDTO result = companyService.save(companyDTO);
+        if (result.getCompanyLogo() != null) {
+        String fileName = "Company" + result.getId()  + ".png";
+        String companyLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(companyDTO.getCompanyLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        result.setCompanyLogoUrl(companyLogoUrl);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        CompanyDTO result2 = companyService.save(result);
+        result2.setCompanyLogo(null);
+        result2.setCompanyLogoContentType(null);
+        companyService.save(result2);
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, companyDTO.getId().toString()))
             .body(result);
@@ -90,27 +132,15 @@ public class CompanyResource {
      * GET  /companies : get all the companies.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of companies in body
      */
     @GetMapping("/companies")
-    public ResponseEntity<List<CompanyDTO>> getAllCompanies(CompanyCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Companies by criteria: {}", criteria);
-        Page<CompanyDTO> page = companyQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies(Pageable pageable) {
+        log.debug("REST request to get a page of Companies");
+        Pageable pageable2 =  PageRequest.of(pageable.getPageNumber(),2000);
+        Page<CompanyDTO> page = companyService.findAll(pageable2);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companies");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /companies/count : count all the companies.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/companies/count")
-    public ResponseEntity<Long> countCompanies(CompanyCriteria criteria) {
-        log.debug("REST request to count Companies by criteria: {}", criteria);
-        return ResponseEntity.ok().body(companyQueryService.countByCriteria(criteria));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -136,6 +166,7 @@ public class CompanyResource {
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         log.debug("REST request to delete Company : {}", id);
         companyService.delete(id);
+        CommonUtils.deleteFromS3("Company" + id + ".png", s3Service.getAmazonS3());
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -152,7 +183,7 @@ public class CompanyResource {
         log.debug("REST request to search for a page of Companies for query {}", query);
         Page<CompanyDTO> page = companyService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/companies");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    
 }

@@ -1,15 +1,23 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.service.ProductQueryService;
 import com.loja.dora.service.ProductService;
+import com.loja.dora.service.ShopChangeService;
+import com.loja.dora.service.dto.ProductCriteria;
+import com.loja.dora.service.dto.ProductDTO;
+import com.loja.dora.service.dto.ProductDTOFull;
+import com.loja.dora.service.s3.S3Service;
+import com.loja.dora.utils.CommonUtils;
+import com.loja.dora.utils.Constants;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.ProductDTO;
-import com.loja.dora.service.dto.ProductCriteria;
-import com.loja.dora.service.ProductQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +27,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Product.
@@ -40,10 +45,29 @@ public class ProductResource {
     private final ProductService productService;
 
     private final ProductQueryService productQueryService;
-
+    
+    @Autowired
+    ShopChangeService shopChangeService;
+    
+    @Autowired
+    private S3Service s3Service;
+    
     public ProductResource(ProductService productService, ProductQueryService productQueryService) {
         this.productService = productService;
         this.productQueryService = productQueryService;
+    }
+
+   
+    /**
+    * GET  /products/count : count all the products.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/products/count")
+    public ResponseEntity<Long> countProducts(ProductCriteria criteria) {
+        log.debug("REST request to count Products by criteria: {}", criteria);
+        return ResponseEntity.ok().body(productQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -59,7 +83,35 @@ public class ProductResource {
         if (productDTO.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        /* -START-
+        * ADD DEFAULT VALUES TO THE FIELDS BELOW
+        */
+        productDTO.setDateCreated(ZonedDateTime.now());
+        productDTO.setActive(true);
+        /* -END- */
         ProductDTO result = productService.save(productDTO);
+        CommonUtils.saveShopChange(shopChangeService, productDTO.getShopId(), "Product", "New Product created", productDTO.getShopShopName()); 
+     
+        String fileName = "Product" + result.getId()  + ".png";
+        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setProductImageFullUrl(url);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageFull()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        ProductDTO result2 = productService.save(result);
+        result2.setProductImageFull(null);
+        result2.setProductImageFullContentType(null);
+        
+        String fileName2 = "ProductThumb" + result.getId()  + ".png";
+        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        result2.setProductImageThumbUrl(url2);
+        byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageThumb()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
+        CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
+        result2.setProductImageThumb(null);
+        result2.setProductImageThumbContentType(null);
+        
+        productService.save(result2);
+        
+        
         return ResponseEntity.created(new URI("/api/products/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,6 +133,30 @@ public class ProductResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ProductDTO result = productService.save(productDTO);
+        CommonUtils.saveShopChange(shopChangeService, productDTO.getShopId(), "Product", "Existng Product updated", productDTO.getShopShopName()); 
+        if (productDTO.getProductImageFull() != null) {
+        String fileName = "Product" + result.getId()  + ".png";
+        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setProductImageFullUrl(url);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageFull()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        result.setProductImageFull(null);
+        result.setProductImageFullContentType(null);
+        productService.save(result);
+        }
+        
+        if (productDTO.getProductImageThumb() != null) {
+
+        String fileName2 = "ProductThumb" + result.getId()  + ".png";
+        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        ProductDTO result2 = productService.save(result);
+        result2.setProductImageThumbUrl(url2);
+        byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageThumb()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
+        CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
+        result2.setProductImageThumb(null);
+        result2.setProductImageThumbContentType(null);      
+        productService.save(result2);
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, productDTO.getId().toString()))
             .body(result);
@@ -90,27 +166,15 @@ public class ProductResource {
      * GET  /products : get all the products.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of products in body
      */
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts(ProductCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Products by criteria: {}", criteria);
-        Page<ProductDTO> page = productQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<ProductDTO>> getAllProducts(Pageable pageable) {
+        log.debug("REST request to get a page of Products");
+        Pageable pageable2 =  PageRequest.of(pageable.getPageNumber(),2000);
+        Page<ProductDTO> page = productService.findAll(pageable2);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/products");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /products/count : count all the products.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/products/count")
-    public ResponseEntity<Long> countProducts(ProductCriteria criteria) {
-        log.debug("REST request to count Products by criteria: {}", criteria);
-        return ResponseEntity.ok().body(productQueryService.countByCriteria(criteria));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -135,7 +199,13 @@ public class ProductResource {
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         log.debug("REST request to delete Product : {}", id);
+        Optional<ProductDTO> productDTO = productService.findOne(id);
+        long shopId = productDTO.get().getShopId();
+        String shopName = productDTO.get().getShopShopName();
         productService.delete(id);
+        CommonUtils.saveShopChange(shopChangeService, shopId, "Product", "Existng Product deleted", shopName); 
+        CommonUtils.deleteFromS3("Product" + id + ".png", s3Service.getAmazonS3());
+        CommonUtils.deleteFromS3("ProductThumb" + id + ".png", s3Service.getAmazonS3());     
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -152,7 +222,34 @@ public class ProductResource {
         log.debug("REST request to search for a page of Products for query {}", query);
         Page<ProductDTO> page = productService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/products");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /products-by-product-category-id : get all the productsByProductCategoryId.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("/products-by-product-category-id/{categoryId}")
+    public ResponseEntity<List<ProductDTO>> getAllProductsByProductCategoryId(@PathVariable Long categoryId, Pageable pageable) {
+        log.debug("REST request to get a page of getAllProductsByProductCategoryId");
+        Page<ProductDTO> page = productService.findAllByProductCategoryId(pageable,categoryId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/products-by-product-category-id");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /products : get all the products.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of products in body
+     */
+    @GetMapping("products-by-product-shop-id/{shopId}")
+    public ResponseEntity<List<ProductDTOFull>> getAllProductsByShopId(Long shopId) {
+        log.debug("REST request to get a page of getAllProductsByShopId");
+        List<ProductDTOFull> productDTOLit = productService.findAllByShopId(shopId);
+        return new ResponseEntity<>(productDTOLit, HttpStatus.OK); 
     }
 
 }

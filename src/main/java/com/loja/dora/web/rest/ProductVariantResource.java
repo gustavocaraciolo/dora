@@ -1,15 +1,24 @@
 package com.loja.dora.web.rest;
+
+import com.loja.dora.service.ProductService;
+import com.loja.dora.service.ProductVariantQueryService;
 import com.loja.dora.service.ProductVariantService;
+import com.loja.dora.service.ShopChangeService;
+import com.loja.dora.service.dto.ProductDTO;
+import com.loja.dora.service.dto.ProductVariantCriteria;
+import com.loja.dora.service.dto.ProductVariantDTO;
+import com.loja.dora.service.s3.S3Service;
+import com.loja.dora.utils.CommonUtils;
+import com.loja.dora.utils.Constants;
 import com.loja.dora.web.rest.errors.BadRequestAlertException;
 import com.loja.dora.web.rest.util.HeaderUtil;
 import com.loja.dora.web.rest.util.PaginationUtil;
-import com.loja.dora.service.dto.ProductVariantDTO;
-import com.loja.dora.service.dto.ProductVariantCriteria;
-import com.loja.dora.service.ProductVariantQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,12 +28,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ProductVariant.
@@ -40,11 +45,35 @@ public class ProductVariantResource {
     private final ProductVariantService productVariantService;
 
     private final ProductVariantQueryService productVariantQueryService;
+    
+    @Autowired
+    ProductService productService;
+   
+    @Autowired
+    ShopChangeService shopChangeService;
+    
+    @Autowired
+    private S3Service s3Service;
+
 
     public ProductVariantResource(ProductVariantService productVariantService, ProductVariantQueryService productVariantQueryService) {
         this.productVariantService = productVariantService;
         this.productVariantQueryService = productVariantQueryService;
     }
+
+
+    /**
+    * GET  /product-variants/count : count all the productVariants.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/product-variants/count")
+    public ResponseEntity<Long> countProductVariants(ProductVariantCriteria criteria) {
+        log.debug("REST request to count ProductVariants by criteria: {}", criteria);
+        return ResponseEntity.ok().body(productVariantQueryService.countByCriteria(criteria));
+    }
+
 
     /**
      * POST  /product-variants : Create a new productVariant.
@@ -60,6 +89,29 @@ public class ProductVariantResource {
             throw new BadRequestAlertException("A new productVariant cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ProductVariantDTO result = productVariantService.save(productVariantDTO);
+        Optional <ProductDTO> productDTO = productService.findOne(productVariantDTO.getProductId());
+        CommonUtils.saveShopChange(shopChangeService, productDTO.get().getShopId(), "ProductVariant", "New ProductVariant created", productDTO.get().getShopShopName()); 
+      
+        String fileName = "ProductVariant" + result.getId()  + ".png";
+        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setFullPhotoUrl(url);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productVariantDTO.getFullPhoto()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        ProductVariantDTO result2 = productVariantService.save(result);
+        result2.setFullPhoto(null);
+        result2.setFullPhotoContentType(null);
+        
+        String fileName2 = "ProductVariantThumb" + result.getId()  + ".png";
+        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        result2.setThumbnailPhotoUrl(url2);
+        byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productVariantDTO.getThumbnailPhoto()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
+        CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
+        result2.setThumbnailPhoto(null);
+        result2.setThumbnailPhotoContentType(null);
+        
+  
+        productVariantService.save(result2);
+        
         return ResponseEntity.created(new URI("/api/product-variants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,6 +133,33 @@ public class ProductVariantResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ProductVariantDTO result = productVariantService.save(productVariantDTO);
+        Optional <ProductDTO> productDTO = productService.findOne(productVariantDTO.getProductId());
+        CommonUtils.saveShopChange(shopChangeService, productDTO.get().getShopId(), "ProductVariant", "Existing ProductVariant updated", productDTO.get().getShopShopName()); 
+       
+   if (productVariantDTO.getFullPhoto() != null) {
+        String fileName = "ProductVariant" + result.getId()  + ".png";
+        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        result.setFullPhotoUrl(url);
+        byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productVariantDTO.getFullPhoto()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
+        CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
+        result.setFullPhoto(null);
+        result.setFullPhotoContentType(null);
+        productVariantService.save(result);
+
+   }
+   
+   if (productVariantDTO.getThumbnailPhoto() != null) {
+
+        String fileName2 = "ProductVariantThumb" + result.getId()  + ".png";
+        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        ProductVariantDTO result2 = productVariantService.save(result);
+        result2.setThumbnailPhotoUrl(url2);
+        byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productVariantDTO.getThumbnailPhoto()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
+        CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
+        result2.setThumbnailPhoto(null);
+        result2.setThumbnailPhotoContentType(null);
+        productVariantService.save(result2);
+   }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, productVariantDTO.getId().toString()))
             .body(result);
@@ -90,27 +169,15 @@ public class ProductVariantResource {
      * GET  /product-variants : get all the productVariants.
      *
      * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of productVariants in body
      */
     @GetMapping("/product-variants")
-    public ResponseEntity<List<ProductVariantDTO>> getAllProductVariants(ProductVariantCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get ProductVariants by criteria: {}", criteria);
-        Page<ProductVariantDTO> page = productVariantQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<ProductVariantDTO>> getAllProductVariants(Pageable pageable) {
+        log.debug("REST request to get a page of ProductVariants");
+        Pageable pageable2 =  PageRequest.of(pageable.getPageNumber(),2000);
+        Page<ProductVariantDTO> page = productVariantService.findAll(pageable2);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/product-variants");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-    * GET  /product-variants/count : count all the productVariants.
-    *
-    * @param criteria the criterias which the requested entities should match
-    * @return the ResponseEntity with status 200 (OK) and the count in body
-    */
-    @GetMapping("/product-variants/count")
-    public ResponseEntity<Long> countProductVariants(ProductVariantCriteria criteria) {
-        log.debug("REST request to count ProductVariants by criteria: {}", criteria);
-        return ResponseEntity.ok().body(productVariantQueryService.countByCriteria(criteria));
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -135,7 +202,14 @@ public class ProductVariantResource {
     @DeleteMapping("/product-variants/{id}")
     public ResponseEntity<Void> deleteProductVariant(@PathVariable Long id) {
         log.debug("REST request to delete ProductVariant : {}", id);
+        Optional<ProductVariantDTO> productVariantDTO = productVariantService.findOne(id);
+        Optional <ProductDTO> productDTO = productService.findOne(productVariantDTO.get().getProductId());
+        long shopId  = productDTO.get().getShopId();
+        String shopName = productDTO.get().getShopShopName();
         productVariantService.delete(id);
+        CommonUtils.saveShopChange(shopChangeService, shopId, "ProductVariant", "Existing ProductVariant updated", shopName); 
+        CommonUtils.deleteFromS3("ProductVariant" + id + ".png", s3Service.getAmazonS3());
+        CommonUtils.deleteFromS3("ProductVariantThumb" + id + ".png", s3Service.getAmazonS3());      
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -152,7 +226,6 @@ public class ProductVariantResource {
         log.debug("REST request to search for a page of ProductVariants for query {}", query);
         Page<ProductVariantDTO> page = productVariantService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/product-variants");
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
 }
