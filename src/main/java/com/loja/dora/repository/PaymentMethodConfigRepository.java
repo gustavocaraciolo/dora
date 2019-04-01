@@ -4,6 +4,8 @@ import com.loja.dora.domain.PaymentMethodConfig;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * Spring Data  repository for the PaymentMethodConfig entity.
@@ -12,4 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentMethodConfigRepository extends JpaRepository<PaymentMethodConfig, Long>, JpaSpecificationExecutor<PaymentMethodConfig> {
 
+    List<PaymentMethodConfig> findAllByPaymentMethodId(Long paymentMethodId);
 }
