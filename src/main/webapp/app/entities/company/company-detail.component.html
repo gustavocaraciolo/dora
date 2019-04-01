@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="company">
+            <h2><span jhiTranslate="doraApp.company.detail.title">Company</span> {{company.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.company.companyName">Company Name</span></dt>
+                <dd>
+                    <span>{{company.companyName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.company.description">Description</span></dt>
+                <dd>
+                    <span>{{company.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.company.note">Note</span></dt>
+                <dd>
+                    <span>{{company.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.company.companyLogo">Company Logo</span></dt>
+                <dd>
+                    <div *ngIf="company.companyLogo">
+                        <a (click)="openFile(company.companyLogoContentType, company.companyLogo)">
+                            <img [src]="'data:' + company.companyLogoContentType + ';base64,' + company.companyLogo" style="max-width: 100%;" alt="company image"/>
+                        </a>
+                        {{company.companyLogoContentType}}, {{byteSize(company.companyLogo)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.company.companyLogoUrl">Company Logo Url</span></dt>
+                <dd>
+                    <span>{{company.companyLogoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.company.active">Active</span></dt>
+                <dd>
+                    <span>{{company.active}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/company', company.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

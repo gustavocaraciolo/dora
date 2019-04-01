@@ -1,0 +1,121 @@
+{
+    "name": "Profile",
+    "fields": [
+        {
+            "fieldName": "firstName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userType",
+            "fieldType": "ProfileType",
+            "fieldValues": "SYSTEM_MANAGER,COMPANY_MANAGER,SHOP_MANAGER,EMPLOYEE,CUSTOMER,SUPPLIER,MANAGEMENT_CEO,MANAGEMENT_OTHER,ACCOUNTANT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateOfBirth",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "Gender",
+            "fieldValues": "MALE,FEMALE"
+        },
+        {
+            "fieldName": "registerationDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lastAccess",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "profileStatus",
+            "fieldType": "ProfileStatus",
+            "fieldValues": "ACTIVE,SUSPENDED,IN_ACTIVE"
+        },
+        {
+            "fieldName": "telephone",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "mobile",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hourlyPayRate",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "thumbnailPhoto",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "thumbnailPhotoUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fullPhoto",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "fullPhotoUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "shopChangeId",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "profile",
+            "relationshipName": "user",
+            "otherEntityField": "firstName",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "profiles",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        }
+    ],
+    "changelogDate": "20190331011356",
+    "entityTableName": "profile",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="shopSection">
+            <h2><span jhiTranslate="doraApp.shopSection.detail.title">Shop Section</span> {{shopSection.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.shopSection.sectionName">Section Name</span></dt>
+                <dd>
+                    <span>{{shopSection.sectionName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopSection.description">Description</span></dt>
+                <dd>
+                    <span>{{shopSection.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopSection.surchargePercentage">Surcharge Percentage</span></dt>
+                <dd>
+                    <span>{{shopSection.surchargePercentage}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopSection.surchargeFlatAmount">Surcharge Flat Amount</span></dt>
+                <dd>
+                    <span>{{shopSection.surchargeFlatAmount}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopSection.usePercentage">Use Percentage</span></dt>
+                <dd>
+                    <span>{{shopSection.usePercentage}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopSection.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="shopSection.shopId">
+                        <a [routerLink]="['/shop', shopSection.shopId, 'view']">{{shopSection.shopShopName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/shop-section', shopSection.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

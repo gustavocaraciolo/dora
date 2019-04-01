@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="productExtra">
+            <h2><span jhiTranslate="doraApp.productExtra.detail.title">Product Extra</span> {{productExtra.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.productExtra.extraName">Extra Name</span></dt>
+                <dd>
+                    <span>{{productExtra.extraName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.description">Description</span></dt>
+                <dd>
+                    <span>{{productExtra.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.extraValue">Extra Value</span></dt>
+                <dd>
+                    <span>{{productExtra.extraValue}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.fullPhoto">Full Photo</span></dt>
+                <dd>
+                    <div *ngIf="productExtra.fullPhoto">
+                        <a (click)="openFile(productExtra.fullPhotoContentType, productExtra.fullPhoto)">
+                            <img [src]="'data:' + productExtra.fullPhotoContentType + ';base64,' + productExtra.fullPhoto" style="max-width: 100%;" alt="productExtra image"/>
+                        </a>
+                        {{productExtra.fullPhotoContentType}}, {{byteSize(productExtra.fullPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.fullPhotoUrl">Full Photo Url</span></dt>
+                <dd>
+                    <span>{{productExtra.fullPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.thumbnailPhoto">Thumbnail Photo</span></dt>
+                <dd>
+                    <div *ngIf="productExtra.thumbnailPhoto">
+                        <a (click)="openFile(productExtra.thumbnailPhotoContentType, productExtra.thumbnailPhoto)">
+                            <img [src]="'data:' + productExtra.thumbnailPhotoContentType + ';base64,' + productExtra.thumbnailPhoto" style="max-width: 100%;" alt="productExtra image"/>
+                        </a>
+                        {{productExtra.thumbnailPhotoContentType}}, {{byteSize(productExtra.thumbnailPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.thumbnailPhotoUrl">Thumbnail Photo Url</span></dt>
+                <dd>
+                    <span>{{productExtra.thumbnailPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productExtra.product">Product</span></dt>
+                <dd>
+                    <div *ngIf="productExtra.productId">
+                        <a [routerLink]="['/product', productExtra.productId, 'view']">{{productExtra.productProductName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/product-extra', productExtra.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

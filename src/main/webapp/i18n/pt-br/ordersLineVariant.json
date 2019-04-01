@@ -1,0 +1,32 @@
+{
+    "doraApp": {
+        "ordersLineVariant": {
+            "home": {
+                "title": "Orders Line Variants",
+                "createLabel": "Criar novo Orders Line Variant",
+                "createOrEditLabel": "Criar ou editar Orders Line Variant",
+                "search": "Pesquisar por Orders Line Variant"
+            },
+            "created": "Um novo Orders Line Variant foi criado com o identificador {{ param }}",
+            "updated": "Um Orders Line Variant foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Orders Line Variant foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Orders Line Variant {{ id }}?"
+            },
+            "detail": {
+                "title": "Orders Line Variant"
+            },
+            "variantName": "Variant Name",
+            "variantValue": "Variant Value",
+            "description": "Description",
+            "percentage": "Percentage",
+            "fullPhoto": "Full Photo",
+            "fullPhotoUrl": "Full Photo Url",
+            "thumbnailPhoto": "Thumbnail Photo",
+            "thumbnailPhotoUrl": "Thumbnail Photo Url",
+            "price": "Price",
+            "ordersLine": "Orders Line",
+            "ordersLineExtras": "Orders Line Extras"
+        }
+    }
+}

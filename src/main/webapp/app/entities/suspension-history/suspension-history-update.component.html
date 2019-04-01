@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-suspension-history-heading" jhiTranslate="doraApp.suspensionHistory.home.createOrEditLabel">Create or edit a Suspension History</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!suspensionHistory.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="suspensionHistory.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.suspendedDate" for="field_suspendedDate">Suspended Date</label>
+                    <div class="d-flex">
+                        <input id="field_suspendedDate" type="datetime-local" class="form-control" name="suspendedDate" [(ngModel)]="suspendedDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.suspensionType" for="field_suspensionType">Suspension Type</label>
+                    <select class="form-control" name="suspensionType" [(ngModel)]="suspensionHistory.suspensionType" id="field_suspensionType" >
+                        <option value="BANNED_FOR_LIFE">{{'doraApp.SuspensionType.BANNED_FOR_LIFE' | translate}}</option>
+                        <option value="BANNED_TEMPORARILY">{{'doraApp.SuspensionType.BANNED_TEMPORARILY' | translate}}</option>
+                        <option value="DELETED_BY_USER">{{'doraApp.SuspensionType.DELETED_BY_USER' | translate}}</option>
+                        <option value="DELETED_BY_ADMIN">{{'doraApp.SuspensionType.DELETED_BY_ADMIN' | translate}}</option>
+                        <option value="TEMP_DEACTIVATION_BY_USER">{{'doraApp.SuspensionType.TEMP_DEACTIVATION_BY_USER' | translate}}</option>
+                        <option value="UNDER_INVESTIGATION">{{'doraApp.SuspensionType.UNDER_INVESTIGATION' | translate}}</option>
+                        <option value="NONE">{{'doraApp.SuspensionType.NONE' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.suspendedReason" for="field_suspendedReason">Suspended Reason</label>
+                    <input type="text" class="form-control" name="suspendedReason" id="field_suspendedReason"
+                        [(ngModel)]="suspensionHistory.suspendedReason" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.resolutionNote" for="field_resolutionNote">Resolution Note</label>
+                    <input type="text" class="form-control" name="resolutionNote" id="field_resolutionNote"
+                        [(ngModel)]="suspensionHistory.resolutionNote" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.unsuspensionDate" for="field_unsuspensionDate">Unsuspension Date</label>
+                    <div class="d-flex">
+                        <input id="field_unsuspensionDate" type="datetime-local" class="form-control" name="unsuspensionDate" [(ngModel)]="unsuspensionDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.profile" for="field_profile">Profile</label>
+                    <select class="form-control" id="field_profile" name="profile" [(ngModel)]="suspensionHistory.profileId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.suspensionHistory.suspendedBy" for="field_suspendedBy">Suspended By</label>
+                    <select class="form-control" id="field_suspendedBy" name="suspendedBy" [(ngModel)]="suspensionHistory.suspendedById" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

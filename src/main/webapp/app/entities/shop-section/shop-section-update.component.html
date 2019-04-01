@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-shop-section-heading" jhiTranslate="doraApp.shopSection.home.createOrEditLabel">Create or edit a Shop Section</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!shopSection.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="shopSection.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shopSection.sectionName" for="field_sectionName">Section Name</label>
+                    <input type="text" class="form-control" name="sectionName" id="field_sectionName"
+                        [(ngModel)]="shopSection.sectionName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shopSection.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="shopSection.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shopSection.surchargePercentage" for="field_surchargePercentage">Surcharge Percentage</label>
+                    <input type="number" class="form-control" name="surchargePercentage" id="field_surchargePercentage"
+                        [(ngModel)]="shopSection.surchargePercentage" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shopSection.surchargeFlatAmount" for="field_surchargeFlatAmount">Surcharge Flat Amount</label>
+                    <input type="number" class="form-control" name="surchargeFlatAmount" id="field_surchargeFlatAmount"
+                        [(ngModel)]="shopSection.surchargeFlatAmount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shopSection.usePercentage" for="field_usePercentage">Use Percentage</label>
+                    <input type="checkbox" class="form-control" name="usePercentage" id="field_usePercentage"
+                        [(ngModel)]="shopSection.usePercentage" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shopSection.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="shopSection.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

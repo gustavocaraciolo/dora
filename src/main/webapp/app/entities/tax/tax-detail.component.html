@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tax">
+            <h2><span jhiTranslate="doraApp.tax.detail.title">Tax</span> {{tax.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.tax.description">Description</span></dt>
+                <dd>
+                    <span>{{tax.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.tax.percentage">Percentage</span></dt>
+                <dd>
+                    <span>{{tax.percentage}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.tax.amount">Amount</span></dt>
+                <dd>
+                    <span>{{tax.amount}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.tax.active">Active</span></dt>
+                <dd>
+                    <span>{{tax.active}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.tax.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="tax.shopId">
+                        <a [routerLink]="['/shop', tax.shopId, 'view']">{{tax.shopShopName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tax', tax.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

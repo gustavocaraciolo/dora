@@ -1,0 +1,135 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.orders.home.title">Orders</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-orders" [routerLink]="['/orders/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.orders.home.createLabel">
+            Create new Orders
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.orders.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="orders">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="doraApp.orders.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="customerName"><span jhiTranslate="doraApp.orders.customerName">Customer Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="totalPrice"><span jhiTranslate="doraApp.orders.totalPrice">Total Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="quantity"><span jhiTranslate="doraApp.orders.quantity">Quantity</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="discountPercentage"><span jhiTranslate="doraApp.orders.discountPercentage">Discount Percentage</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="discountAmount"><span jhiTranslate="doraApp.orders.discountAmount">Discount Amount</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="taxPercentage"><span jhiTranslate="doraApp.orders.taxPercentage">Tax Percentage</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="taxAmount"><span jhiTranslate="doraApp.orders.taxAmount">Tax Amount</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="orderStatus"><span jhiTranslate="doraApp.orders.orderStatus">Order Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="note"><span jhiTranslate="doraApp.orders.note">Note</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="orderDate"><span jhiTranslate="doraApp.orders.orderDate">Order Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isVariantOrder"><span jhiTranslate="doraApp.orders.isVariantOrder">Is Variant Order</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="paymentMethodPaymentMethod"><span jhiTranslate="doraApp.orders.paymentMethod">Payment Method</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="soldByFirstName"><span jhiTranslate="doraApp.orders.soldBy">Sold By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="preparedByFirstName"><span jhiTranslate="doraApp.orders.preparedBy">Prepared By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopDeviceDeviceName"><span jhiTranslate="doraApp.orders.shopDevice">Shop Device</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="sectionTableTableNumber"><span jhiTranslate="doraApp.orders.sectionTable">Section Table</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopShopName"><span jhiTranslate="doraApp.orders.shop">Shop</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let orders of orders ;trackBy: trackId">
+                <td><a [routerLink]="['/orders', orders.id, 'view' ]">{{orders.id}}</a></td>
+                <td>{{orders.description}}</td>
+                <td>{{orders.customerName}}</td>
+                <td>{{orders.totalPrice}}</td>
+                <td>{{orders.quantity}}</td>
+                <td>{{orders.discountPercentage}}</td>
+                <td>{{orders.discountAmount}}</td>
+                <td>{{orders.taxPercentage}}</td>
+                <td>{{orders.taxAmount}}</td>
+                <td jhiTranslate="{{'doraApp.OrderStatus.' + orders.orderStatus}}">{{orders.orderStatus}}</td>
+                <td>{{orders.note}}</td>
+                <td>{{orders.orderDate | date:'medium'}}</td>
+                <td>{{orders.isVariantOrder}}</td>
+                <td>
+                    <div *ngIf="orders.paymentMethodId">
+                        <a [routerLink]="['../payment-method', orders.paymentMethodId , 'view' ]" >{{orders.paymentMethodPaymentMethod}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orders.soldById">
+                        <a [routerLink]="['../profile', orders.soldById , 'view' ]" >{{orders.soldByFirstName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orders.preparedById">
+                        <a [routerLink]="['../profile', orders.preparedById , 'view' ]" >{{orders.preparedByFirstName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orders.shopDeviceId">
+                        <a [routerLink]="['../shop-device', orders.shopDeviceId , 'view' ]" >{{orders.shopDeviceDeviceName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orders.sectionTableId">
+                        <a [routerLink]="['../section-table', orders.sectionTableId , 'view' ]" >{{orders.sectionTableTableNumber}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="orders.shopId">
+                        <a [routerLink]="['../shop', orders.shopId , 'view' ]" >{{orders.shopShopName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/orders', orders.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/orders', orders.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'orders', { outlets: { popup: orders.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="orders && orders.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

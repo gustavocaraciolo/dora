@@ -1,0 +1,76 @@
+{
+    "name": "OrdersLine",
+    "fields": [
+        {
+            "fieldName": "ordersLineName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ordersLineValue",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ordersLinePrice",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "ordersLineDescription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "thumbnailPhoto",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "fullPhoto",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "fullPhotoUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "thumbnailPhotoUrl",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "orders",
+            "otherEntityName": "orders",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ordersLineVariant",
+            "otherEntityRelationshipName": "ordersLine",
+            "relationshipName": "ordersLineVariants"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "ordersLine",
+            "relationshipName": "product",
+            "otherEntityField": "productName"
+        }
+    ],
+    "changelogDate": "20190331011359",
+    "entityTableName": "orders_line",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

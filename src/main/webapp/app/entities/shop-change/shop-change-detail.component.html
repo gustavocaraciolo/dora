@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="shopChange">
+            <h2><span jhiTranslate="doraApp.shopChange.detail.title">Shop Change</span> {{shopChange.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.shopChange.change">Change</span></dt>
+                <dd>
+                    <span>{{shopChange.change}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopChange.changedEntity">Changed Entity</span></dt>
+                <dd>
+                    <span>{{shopChange.changedEntity}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopChange.note">Note</span></dt>
+                <dd>
+                    <span>{{shopChange.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopChange.changeDate">Change Date</span></dt>
+                <dd>
+                    <span>{{shopChange.changeDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopChange.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="shopChange.shopId">
+                        <a [routerLink]="['/shop', shopChange.shopId, 'view']">{{shopChange.shopShopName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shopChange.changedBy">Changed By</span></dt>
+                <dd>
+                    <div *ngIf="shopChange.changedById">
+                        <a [routerLink]="['/profile', shopChange.changedById, 'view']">{{shopChange.changedByFirstName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/shop-change', shopChange.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

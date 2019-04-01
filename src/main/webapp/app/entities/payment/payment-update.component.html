@@ -1,0 +1,89 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-payment-heading" jhiTranslate="doraApp.payment.home.createOrEditLabel">Create or edit a Payment</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!payment.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="payment.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.paymentDate" for="field_paymentDate">Payment Date</label>
+                    <div class="d-flex">
+                        <input id="field_paymentDate" type="datetime-local" class="form-control" name="paymentDate" [(ngModel)]="paymentDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.paymentProvider" for="field_paymentProvider">Payment Provider</label>
+                    <input type="text" class="form-control" name="paymentProvider" id="field_paymentProvider"
+                        [(ngModel)]="payment.paymentProvider" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.amount" for="field_amount">Amount</label>
+                    <input type="number" class="form-control" name="amount" id="field_amount"
+                        [(ngModel)]="payment.amount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.paymentStatus" for="field_paymentStatus">Payment Status</label>
+                    <select class="form-control" name="paymentStatus" [(ngModel)]="payment.paymentStatus" id="field_paymentStatus" >
+                        <option value="PENDING">{{'doraApp.PaymentStatus.PENDING' | translate}}</option>
+                        <option value="PAID">{{'doraApp.PaymentStatus.PAID' | translate}}</option>
+                        <option value="CANCELLED">{{'doraApp.PaymentStatus.CANCELLED' | translate}}</option>
+                        <option value="REFUNDED">{{'doraApp.PaymentStatus.REFUNDED' | translate}}</option>
+                        <option value="FAILED">{{'doraApp.PaymentStatus.FAILED' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.curency" for="field_curency">Curency</label>
+                    <input type="text" class="form-control" name="curency" id="field_curency"
+                        [(ngModel)]="payment.curency" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.customerName" for="field_customerName">Customer Name</label>
+                    <input type="text" class="form-control" name="customerName" id="field_customerName"
+                        [(ngModel)]="payment.customerName" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="payment.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.processedBy" for="field_processedBy">Processed By</label>
+                    <select class="form-control" id="field_processedBy" name="processedBy" [(ngModel)]="payment.processedById" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.paymentMethod" for="field_paymentMethod">Payment Method</label>
+                    <select class="form-control" id="field_paymentMethod" name="paymentMethod" [(ngModel)]="payment.paymentMethodId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="paymentMethodOption.id" *ngFor="let paymentMethodOption of paymentmethods; trackBy: trackPaymentMethodById">{{paymentMethodOption.paymentMethod}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.payment.order" for="field_order">Order</label>
+                    <select class="form-control" id="field_order" name="order" [(ngModel)]="payment.orderId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ordersOption.id" *ngFor="let ordersOption of orders; trackBy: trackOrdersById">{{ordersOption.description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+{
+    "doraApp": {
+        "product": {
+            "home": {
+                "title": "Products",
+                "createLabel": "Criar novo Product",
+                "createOrEditLabel": "Criar ou editar Product",
+                "search": "Pesquisar por Product"
+            },
+            "created": "Um novo Product foi criado com o identificador {{ param }}",
+            "updated": "Um Product foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Product foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Product {{ id }}?"
+            },
+            "detail": {
+                "title": "Product"
+            },
+            "productName": "Product Name",
+            "productDescription": "Product Description",
+            "price": "Price",
+            "quantity": "Quantity",
+            "productImageFull": "Product Image Full",
+            "productImageFullUrl": "Product Image Full Url",
+            "productImageThumb": "Product Image Thumb",
+            "productImageThumbUrl": "Product Image Thumb Url",
+            "dateCreated": "Date Created",
+            "barcode": "Barcode",
+            "serialCode": "Serial Code",
+            "priorityPosition": "Priority Position",
+            "active": "Active",
+            "isVariantProduct": "Is Variant Product",
+            "variants": "Variants",
+            "extras": "Extras",
+            "productTypes": "Product Types",
+            "shop": "Shop",
+            "discounts": "Discounts",
+            "taxes": "Taxes",
+            "category": "Category"
+        }
+    }
+}

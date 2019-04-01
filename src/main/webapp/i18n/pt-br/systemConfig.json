@@ -1,0 +1,27 @@
+{
+    "doraApp": {
+        "systemConfig": {
+            "home": {
+                "title": "System Configs",
+                "createLabel": "Criar novo System Config",
+                "createOrEditLabel": "Criar ou editar System Config",
+                "search": "Pesquisar por System Config"
+            },
+            "created": "Um novo System Config foi criado com o identificador {{ param }}",
+            "updated": "Um System Config foi atualizado com o identificador {{ param }}",
+            "deleted": "Um System Config foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir System Config {{ id }}?"
+            },
+            "detail": {
+                "title": "System Config"
+            },
+            "key": "Key",
+            "value": "Value",
+            "configurationType": "Configuration Type",
+            "note": "Note",
+            "enabled": "Enabled",
+            "shop": "Shop"
+        }
+    }
+}

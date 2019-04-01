@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="productVariant">
+            <h2><span jhiTranslate="doraApp.productVariant.detail.title">Product Variant</span> {{productVariant.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.productVariant.variantName">Variant Name</span></dt>
+                <dd>
+                    <span>{{productVariant.variantName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.description">Description</span></dt>
+                <dd>
+                    <span>{{productVariant.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.percentage">Percentage</span></dt>
+                <dd>
+                    <span>{{productVariant.percentage}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.fullPhoto">Full Photo</span></dt>
+                <dd>
+                    <div *ngIf="productVariant.fullPhoto">
+                        <a (click)="openFile(productVariant.fullPhotoContentType, productVariant.fullPhoto)">
+                            <img [src]="'data:' + productVariant.fullPhotoContentType + ';base64,' + productVariant.fullPhoto" style="max-width: 100%;" alt="productVariant image"/>
+                        </a>
+                        {{productVariant.fullPhotoContentType}}, {{byteSize(productVariant.fullPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.fullPhotoUrl">Full Photo Url</span></dt>
+                <dd>
+                    <span>{{productVariant.fullPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.thumbnailPhoto">Thumbnail Photo</span></dt>
+                <dd>
+                    <div *ngIf="productVariant.thumbnailPhoto">
+                        <a (click)="openFile(productVariant.thumbnailPhotoContentType, productVariant.thumbnailPhoto)">
+                            <img [src]="'data:' + productVariant.thumbnailPhotoContentType + ';base64,' + productVariant.thumbnailPhoto" style="max-width: 100%;" alt="productVariant image"/>
+                        </a>
+                        {{productVariant.thumbnailPhotoContentType}}, {{byteSize(productVariant.thumbnailPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.thumbnailPhotoUrl">Thumbnail Photo Url</span></dt>
+                <dd>
+                    <span>{{productVariant.thumbnailPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.price">Price</span></dt>
+                <dd>
+                    <span>{{productVariant.price}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productVariant.product">Product</span></dt>
+                <dd>
+                    <div *ngIf="productVariant.productId">
+                        <a [routerLink]="['/product', productVariant.productId, 'view']">{{productVariant.productProductName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/product-variant', productVariant.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

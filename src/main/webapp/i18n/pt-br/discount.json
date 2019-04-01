@@ -1,0 +1,27 @@
+{
+    "doraApp": {
+        "discount": {
+            "home": {
+                "title": "Discounts",
+                "createLabel": "Criar novo Discount",
+                "createOrEditLabel": "Criar ou editar Discount",
+                "search": "Pesquisar por Discount"
+            },
+            "created": "Um novo Discount foi criado com o identificador {{ param }}",
+            "updated": "Um Discount foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Discount foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Discount {{ id }}?"
+            },
+            "detail": {
+                "title": "Discount"
+            },
+            "description": "Description",
+            "percentage": "Percentage",
+            "amount": "Amount",
+            "active": "Active",
+            "shop": "Shop",
+            "product": "Product"
+        }
+    }
+}

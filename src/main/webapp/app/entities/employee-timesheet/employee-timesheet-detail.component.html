@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="employeeTimesheet">
+            <h2><span jhiTranslate="doraApp.employeeTimesheet.detail.title">Employee Timesheet</span> {{employeeTimesheet.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.checkinTime">Checkin Time</span></dt>
+                <dd>
+                    <span>{{employeeTimesheet.checkinTime}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.checkOutTime">Check Out Time</span></dt>
+                <dd>
+                    <span>{{employeeTimesheet.checkOutTime}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.regularHoursWorked">Regular Hours Worked</span></dt>
+                <dd>
+                    <span>{{employeeTimesheet.regularHoursWorked}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.overTimeHoursWorked">Over Time Hours Worked</span></dt>
+                <dd>
+                    <span>{{employeeTimesheet.overTimeHoursWorked}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.pay">Pay</span></dt>
+                <dd>
+                    <span>{{employeeTimesheet.pay}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.profile">Profile</span></dt>
+                <dd>
+                    <div *ngIf="employeeTimesheet.profileId">
+                        <a [routerLink]="['/profile', employeeTimesheet.profileId, 'view']">{{employeeTimesheet.profileFirstName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.employeeTimesheet.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="employeeTimesheet.shopId">
+                        <a [routerLink]="['/shop', employeeTimesheet.shopId, 'view']">{{employeeTimesheet.shopShopName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/employee-timesheet', employeeTimesheet.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

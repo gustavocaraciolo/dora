@@ -1,0 +1,32 @@
+{
+    "name": "SectionTable",
+    "fields": [
+        {
+            "fieldName": "tableNumber",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shopSection",
+            "otherEntityRelationshipName": "sectionTable",
+            "relationshipName": "shopSections",
+            "otherEntityField": "sectionName"
+        }
+    ],
+    "changelogDate": "20190331011347",
+    "entityTableName": "section_table",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

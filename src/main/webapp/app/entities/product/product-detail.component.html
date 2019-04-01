@@ -1,0 +1,119 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="product">
+            <h2><span jhiTranslate="doraApp.product.detail.title">Product</span> {{product.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.product.productName">Product Name</span></dt>
+                <dd>
+                    <span>{{product.productName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.productDescription">Product Description</span></dt>
+                <dd>
+                    <span>{{product.productDescription}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.price">Price</span></dt>
+                <dd>
+                    <span>{{product.price}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.quantity">Quantity</span></dt>
+                <dd>
+                    <span>{{product.quantity}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.productImageFull">Product Image Full</span></dt>
+                <dd>
+                    <div *ngIf="product.productImageFull">
+                        <a (click)="openFile(product.productImageFullContentType, product.productImageFull)">
+                            <img [src]="'data:' + product.productImageFullContentType + ';base64,' + product.productImageFull" style="max-width: 100%;" alt="product image"/>
+                        </a>
+                        {{product.productImageFullContentType}}, {{byteSize(product.productImageFull)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.productImageFullUrl">Product Image Full Url</span></dt>
+                <dd>
+                    <span>{{product.productImageFullUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.productImageThumb">Product Image Thumb</span></dt>
+                <dd>
+                    <div *ngIf="product.productImageThumb">
+                        <a (click)="openFile(product.productImageThumbContentType, product.productImageThumb)">
+                            <img [src]="'data:' + product.productImageThumbContentType + ';base64,' + product.productImageThumb" style="max-width: 100%;" alt="product image"/>
+                        </a>
+                        {{product.productImageThumbContentType}}, {{byteSize(product.productImageThumb)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.productImageThumbUrl">Product Image Thumb Url</span></dt>
+                <dd>
+                    <span>{{product.productImageThumbUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.dateCreated">Date Created</span></dt>
+                <dd>
+                    <span>{{product.dateCreated}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.barcode">Barcode</span></dt>
+                <dd>
+                    <span>{{product.barcode}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.serialCode">Serial Code</span></dt>
+                <dd>
+                    <span>{{product.serialCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.priorityPosition">Priority Position</span></dt>
+                <dd>
+                    <span>{{product.priorityPosition}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.active">Active</span></dt>
+                <dd>
+                    <span>{{product.active}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.isVariantProduct">Is Variant Product</span></dt>
+                <dd>
+                    <span>{{product.isVariantProduct}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.productTypes">Product Types</span></dt>
+                <dd>
+                    <div *ngIf="product.productTypesId">
+                        <a [routerLink]="['/product-type', product.productTypesId, 'view']">{{product.productTypesProductType}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="product.shopId">
+                        <a [routerLink]="['/shop', product.shopId, 'view']">{{product.shopShopName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.discounts">Discounts</span></dt>
+                <dd>
+                    <div *ngIf="product.discountsId">
+                        <a [routerLink]="['/discount', product.discountsId, 'view']">{{product.discountsDescription}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.taxes">Taxes</span></dt>
+                <dd>
+                    <div *ngIf="product.taxesId">
+                        <a [routerLink]="['/tax', product.taxesId, 'view']">{{product.taxesDescription}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.product.category">Category</span></dt>
+                <dd>
+                    <div *ngIf="product.categoryId">
+                        <a [routerLink]="['/product-category', product.categoryId, 'view']">{{product.categoryCategory}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/product', product.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

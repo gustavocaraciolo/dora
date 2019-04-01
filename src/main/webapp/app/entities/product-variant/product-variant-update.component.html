@@ -1,0 +1,105 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-product-variant-heading" jhiTranslate="doraApp.productVariant.home.createOrEditLabel">Create or edit a Product Variant</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!productVariant.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="productVariant.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.variantName" for="field_variantName">Variant Name</label>
+                    <input type="text" class="form-control" name="variantName" id="field_variantName"
+                        [(ngModel)]="productVariant.variantName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="productVariant.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.percentage" for="field_percentage">Percentage</label>
+                    <input type="number" class="form-control" name="percentage" id="field_percentage"
+                        [(ngModel)]="productVariant.percentage" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.fullPhoto" for="field_fullPhoto">Full Photo</label>
+                    <div>
+                        <img [src]="'data:' + productVariant.fullPhotoContentType + ';base64,' + productVariant.fullPhoto" style="max-height: 100px;" *ngIf="productVariant.fullPhoto" alt="productVariant image"/>
+                        <div *ngIf="productVariant.fullPhoto" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{productVariant.fullPhotoContentType}}, {{byteSize(productVariant.fullPhoto)}}</span>
+                            <button type="button" (click)="clearInputImage('fullPhoto', 'fullPhotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_fullPhoto" (change)="setFileData($event, productVariant, 'fullPhoto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="fullPhoto" id="field_fullPhoto"
+                        [(ngModel)]="productVariant.fullPhoto" />
+                    <input type="hidden" class="form-control" name="fullPhotoContentType" id="field_fullPhotoContentType"
+                        [(ngModel)]="productVariant.fullPhotoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.fullPhotoUrl" for="field_fullPhotoUrl">Full Photo Url</label>
+                    <input type="text" class="form-control" name="fullPhotoUrl" id="field_fullPhotoUrl"
+                        [(ngModel)]="productVariant.fullPhotoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.thumbnailPhoto" for="field_thumbnailPhoto">Thumbnail Photo</label>
+                    <div>
+                        <img [src]="'data:' + productVariant.thumbnailPhotoContentType + ';base64,' + productVariant.thumbnailPhoto" style="max-height: 100px;" *ngIf="productVariant.thumbnailPhoto" alt="productVariant image"/>
+                        <div *ngIf="productVariant.thumbnailPhoto" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{productVariant.thumbnailPhotoContentType}}, {{byteSize(productVariant.thumbnailPhoto)}}</span>
+                            <button type="button" (click)="clearInputImage('thumbnailPhoto', 'thumbnailPhotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_thumbnailPhoto" (change)="setFileData($event, productVariant, 'thumbnailPhoto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="thumbnailPhoto" id="field_thumbnailPhoto"
+                        [(ngModel)]="productVariant.thumbnailPhoto" />
+                    <input type="hidden" class="form-control" name="thumbnailPhotoContentType" id="field_thumbnailPhotoContentType"
+                        [(ngModel)]="productVariant.thumbnailPhotoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.thumbnailPhotoUrl" for="field_thumbnailPhotoUrl">Thumbnail Photo Url</label>
+                    <input type="text" class="form-control" name="thumbnailPhotoUrl" id="field_thumbnailPhotoUrl"
+                        [(ngModel)]="productVariant.thumbnailPhotoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.price" for="field_price">Price</label>
+                    <input type="number" class="form-control" name="price" id="field_price"
+                        [(ngModel)]="productVariant.price" required/>
+                    <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.price?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.price?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productVariant.product" for="field_product">Product</label>
+                    <select class="form-control" id="field_product" name="product" [(ngModel)]="productVariant.productId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.productName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

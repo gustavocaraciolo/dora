@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="systemConfig">
+            <h2><span jhiTranslate="doraApp.systemConfig.detail.title">System Config</span> {{systemConfig.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.systemConfig.key">Key</span></dt>
+                <dd>
+                    <span>{{systemConfig.key}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.systemConfig.value">Value</span></dt>
+                <dd>
+                    <span>{{systemConfig.value}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.systemConfig.configurationType">Configuration Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'doraApp.ConfigType.' + systemConfig.configurationType}}">{{systemConfig.configurationType}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.systemConfig.note">Note</span></dt>
+                <dd>
+                    <span>{{systemConfig.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.systemConfig.enabled">Enabled</span></dt>
+                <dd>
+                    <span>{{systemConfig.enabled}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.systemConfig.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="systemConfig.shopId">
+                        <a [routerLink]="['/shop', systemConfig.shopId, 'view']">{{systemConfig.shopShopName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/system-config', systemConfig.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.product.home.title">Products</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-product" [routerLink]="['/product/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.product.home.createLabel">
+            Create new Product
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.product.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="products">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productName"><span jhiTranslate="doraApp.product.productName">Product Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productDescription"><span jhiTranslate="doraApp.product.productDescription">Product Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="price"><span jhiTranslate="doraApp.product.price">Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="quantity"><span jhiTranslate="doraApp.product.quantity">Quantity</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productImageFull"><span jhiTranslate="doraApp.product.productImageFull">Product Image Full</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productImageFullUrl"><span jhiTranslate="doraApp.product.productImageFullUrl">Product Image Full Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productImageThumb"><span jhiTranslate="doraApp.product.productImageThumb">Product Image Thumb</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productImageThumbUrl"><span jhiTranslate="doraApp.product.productImageThumbUrl">Product Image Thumb Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="dateCreated"><span jhiTranslate="doraApp.product.dateCreated">Date Created</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="barcode"><span jhiTranslate="doraApp.product.barcode">Barcode</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="serialCode"><span jhiTranslate="doraApp.product.serialCode">Serial Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="priorityPosition"><span jhiTranslate="doraApp.product.priorityPosition">Priority Position</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="active"><span jhiTranslate="doraApp.product.active">Active</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isVariantProduct"><span jhiTranslate="doraApp.product.isVariantProduct">Is Variant Product</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="productTypesProductType"><span jhiTranslate="doraApp.product.productTypes">Product Types</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopShopName"><span jhiTranslate="doraApp.product.shop">Shop</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="discountsDescription"><span jhiTranslate="doraApp.product.discounts">Discounts</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="taxesDescription"><span jhiTranslate="doraApp.product.taxes">Taxes</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="categoryCategory"><span jhiTranslate="doraApp.product.category">Category</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let product of products ;trackBy: trackId">
+                <td><a [routerLink]="['/product', product.id, 'view' ]">{{product.id}}</a></td>
+                <td>{{product.productName}}</td>
+                <td>{{product.productDescription}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.quantity}}</td>
+                <td>
+                    <a *ngIf="product.productImageFull" (click)="openFile(product.productImageFullContentType, product.productImageFull)">
+                        <img [src]="'data:' + product.productImageFullContentType + ';base64,' + product.productImageFull" style="max-height: 30px;" alt="product image"/>
+                    </a>
+                    <span *ngIf="product.productImageFull">{{product.productImageFullContentType}}, {{byteSize(product.productImageFull)}}</span>
+                </td>
+                <td>{{product.productImageFullUrl}}</td>
+                <td>
+                    <a *ngIf="product.productImageThumb" (click)="openFile(product.productImageThumbContentType, product.productImageThumb)">
+                        <img [src]="'data:' + product.productImageThumbContentType + ';base64,' + product.productImageThumb" style="max-height: 30px;" alt="product image"/>
+                    </a>
+                    <span *ngIf="product.productImageThumb">{{product.productImageThumbContentType}}, {{byteSize(product.productImageThumb)}}</span>
+                </td>
+                <td>{{product.productImageThumbUrl}}</td>
+                <td>{{product.dateCreated | date:'medium'}}</td>
+                <td>{{product.barcode}}</td>
+                <td>{{product.serialCode}}</td>
+                <td>{{product.priorityPosition}}</td>
+                <td>{{product.active}}</td>
+                <td>{{product.isVariantProduct}}</td>
+                <td>
+                    <div *ngIf="product.productTypesId">
+                        <a [routerLink]="['../product-type', product.productTypesId , 'view' ]" >{{product.productTypesProductType}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="product.shopId">
+                        <a [routerLink]="['../shop', product.shopId , 'view' ]" >{{product.shopShopName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="product.discountsId">
+                        <a [routerLink]="['../discount', product.discountsId , 'view' ]" >{{product.discountsDescription}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="product.taxesId">
+                        <a [routerLink]="['../tax', product.taxesId , 'view' ]" >{{product.taxesDescription}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="product.categoryId">
+                        <a [routerLink]="['../product-category', product.categoryId , 'view' ]" >{{product.categoryCategory}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/product', product.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/product', product.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'product', { outlets: { popup: product.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="products && products.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

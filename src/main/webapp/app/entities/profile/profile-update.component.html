@@ -1,0 +1,199 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-profile-heading" jhiTranslate="doraApp.profile.home.createOrEditLabel">Create or edit a Profile</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!profile.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="profile.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.firstName" for="field_firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="field_firstName"
+                        [(ngModel)]="profile.firstName" required/>
+                    <div [hidden]="!(editForm.controls.firstName?.dirty && editForm.controls.firstName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.firstName?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.lastName" for="field_lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="field_lastName"
+                        [(ngModel)]="profile.lastName" required/>
+                    <div [hidden]="!(editForm.controls.lastName?.dirty && editForm.controls.lastName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.lastName?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.email" for="field_email">Email</label>
+                    <input type="text" class="form-control" name="email" id="field_email"
+                        [(ngModel)]="profile.email" required/>
+                    <div [hidden]="!(editForm.controls.email?.dirty && editForm.controls.email?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.email?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.userType" for="field_userType">User Type</label>
+                    <select class="form-control" name="userType" [(ngModel)]="profile.userType" id="field_userType"  required>
+                        <option value="SYSTEM_MANAGER">{{'doraApp.ProfileType.SYSTEM_MANAGER' | translate}}</option>
+                        <option value="COMPANY_MANAGER">{{'doraApp.ProfileType.COMPANY_MANAGER' | translate}}</option>
+                        <option value="SHOP_MANAGER">{{'doraApp.ProfileType.SHOP_MANAGER' | translate}}</option>
+                        <option value="EMPLOYEE">{{'doraApp.ProfileType.EMPLOYEE' | translate}}</option>
+                        <option value="CUSTOMER">{{'doraApp.ProfileType.CUSTOMER' | translate}}</option>
+                        <option value="SUPPLIER">{{'doraApp.ProfileType.SUPPLIER' | translate}}</option>
+                        <option value="MANAGEMENT_CEO">{{'doraApp.ProfileType.MANAGEMENT_CEO' | translate}}</option>
+                        <option value="MANAGEMENT_OTHER">{{'doraApp.ProfileType.MANAGEMENT_OTHER' | translate}}</option>
+                        <option value="ACCOUNTANT">{{'doraApp.ProfileType.ACCOUNTANT' | translate}}</option>
+                    </select>
+                    <div [hidden]="!(editForm.controls.userType?.dirty && editForm.controls.userType?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.userType?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.dateOfBirth" for="field_dateOfBirth">Date Of Birth</label>
+                    <div class="input-group">
+                        <input id="field_dateOfBirth" type="text" class="form-control" name="dateOfBirth" ngbDatepicker  #dateOfBirthDp="ngbDatepicker" [(ngModel)]="profile.dateOfBirth"
+                        />
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateOfBirthDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.gender" for="field_gender">Gender</label>
+                    <select class="form-control" name="gender" [(ngModel)]="profile.gender" id="field_gender" >
+                        <option value="MALE">{{'doraApp.Gender.MALE' | translate}}</option>
+                        <option value="FEMALE">{{'doraApp.Gender.FEMALE' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.registerationDate" for="field_registerationDate">Registeration Date</label>
+                    <div class="d-flex">
+                        <input id="field_registerationDate" type="datetime-local" class="form-control" name="registerationDate" [(ngModel)]="registerationDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.lastAccess" for="field_lastAccess">Last Access</label>
+                    <div class="d-flex">
+                        <input id="field_lastAccess" type="datetime-local" class="form-control" name="lastAccess" [(ngModel)]="lastAccess" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.profileStatus" for="field_profileStatus">Profile Status</label>
+                    <select class="form-control" name="profileStatus" [(ngModel)]="profile.profileStatus" id="field_profileStatus" >
+                        <option value="ACTIVE">{{'doraApp.ProfileStatus.ACTIVE' | translate}}</option>
+                        <option value="SUSPENDED">{{'doraApp.ProfileStatus.SUSPENDED' | translate}}</option>
+                        <option value="IN_ACTIVE">{{'doraApp.ProfileStatus.IN_ACTIVE' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.telephone" for="field_telephone">Telephone</label>
+                    <input type="text" class="form-control" name="telephone" id="field_telephone"
+                        [(ngModel)]="profile.telephone" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.mobile" for="field_mobile">Mobile</label>
+                    <input type="text" class="form-control" name="mobile" id="field_mobile"
+                        [(ngModel)]="profile.mobile" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.hourlyPayRate" for="field_hourlyPayRate">Hourly Pay Rate</label>
+                    <input type="number" class="form-control" name="hourlyPayRate" id="field_hourlyPayRate"
+                        [(ngModel)]="profile.hourlyPayRate" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.thumbnailPhoto" for="field_thumbnailPhoto">Thumbnail Photo</label>
+                    <div>
+                        <img [src]="'data:' + profile.thumbnailPhotoContentType + ';base64,' + profile.thumbnailPhoto" style="max-height: 100px;" *ngIf="profile.thumbnailPhoto" alt="profile image"/>
+                        <div *ngIf="profile.thumbnailPhoto" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{profile.thumbnailPhotoContentType}}, {{byteSize(profile.thumbnailPhoto)}}</span>
+                            <button type="button" (click)="clearInputImage('thumbnailPhoto', 'thumbnailPhotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_thumbnailPhoto" (change)="setFileData($event, profile, 'thumbnailPhoto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="thumbnailPhoto" id="field_thumbnailPhoto"
+                        [(ngModel)]="profile.thumbnailPhoto" />
+                    <input type="hidden" class="form-control" name="thumbnailPhotoContentType" id="field_thumbnailPhotoContentType"
+                        [(ngModel)]="profile.thumbnailPhotoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.thumbnailPhotoUrl" for="field_thumbnailPhotoUrl">Thumbnail Photo Url</label>
+                    <input type="text" class="form-control" name="thumbnailPhotoUrl" id="field_thumbnailPhotoUrl"
+                        [(ngModel)]="profile.thumbnailPhotoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.fullPhoto" for="field_fullPhoto">Full Photo</label>
+                    <div>
+                        <img [src]="'data:' + profile.fullPhotoContentType + ';base64,' + profile.fullPhoto" style="max-height: 100px;" *ngIf="profile.fullPhoto" alt="profile image"/>
+                        <div *ngIf="profile.fullPhoto" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{profile.fullPhotoContentType}}, {{byteSize(profile.fullPhoto)}}</span>
+                            <button type="button" (click)="clearInputImage('fullPhoto', 'fullPhotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_fullPhoto" (change)="setFileData($event, profile, 'fullPhoto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="fullPhoto" id="field_fullPhoto"
+                        [(ngModel)]="profile.fullPhoto" />
+                    <input type="hidden" class="form-control" name="fullPhotoContentType" id="field_fullPhotoContentType"
+                        [(ngModel)]="profile.fullPhotoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.fullPhotoUrl" for="field_fullPhotoUrl">Full Photo Url</label>
+                    <input type="text" class="form-control" name="fullPhotoUrl" id="field_fullPhotoUrl"
+                        [(ngModel)]="profile.fullPhotoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.active" for="field_active">Active</label>
+                    <input type="checkbox" class="form-control" name="active" id="field_active"
+                        [(ngModel)]="profile.active" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.shopChangeId" for="field_shopChangeId">Shop Change Id</label>
+                    <input type="number" class="form-control" name="shopChangeId" id="field_shopChangeId"
+                        [(ngModel)]="profile.shopChangeId" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.user" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" [(ngModel)]="profile.userId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.profile.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="profile.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

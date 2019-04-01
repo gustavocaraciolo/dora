@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="ordersLineExtra">
+            <h2><span jhiTranslate="doraApp.ordersLineExtra.detail.title">Orders Line Extra</span> {{ordersLineExtra.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.ordersLineExtraName">Orders Line Extra Name</span></dt>
+                <dd>
+                    <span>{{ordersLineExtra.ordersLineExtraName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.ordersLineExtraValue">Orders Line Extra Value</span></dt>
+                <dd>
+                    <span>{{ordersLineExtra.ordersLineExtraValue}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.ordersLineExtraPrice">Orders Line Extra Price</span></dt>
+                <dd>
+                    <span>{{ordersLineExtra.ordersLineExtraPrice}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.ordersOptionDescription">Orders Option Description</span></dt>
+                <dd>
+                    <span>{{ordersLineExtra.ordersOptionDescription}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.fullPhoto">Full Photo</span></dt>
+                <dd>
+                    <div *ngIf="ordersLineExtra.fullPhoto">
+                        <a (click)="openFile(ordersLineExtra.fullPhotoContentType, ordersLineExtra.fullPhoto)">
+                            <img [src]="'data:' + ordersLineExtra.fullPhotoContentType + ';base64,' + ordersLineExtra.fullPhoto" style="max-width: 100%;" alt="ordersLineExtra image"/>
+                        </a>
+                        {{ordersLineExtra.fullPhotoContentType}}, {{byteSize(ordersLineExtra.fullPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.fullPhotoUrl">Full Photo Url</span></dt>
+                <dd>
+                    <span>{{ordersLineExtra.fullPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.thumbnailPhoto">Thumbnail Photo</span></dt>
+                <dd>
+                    <div *ngIf="ordersLineExtra.thumbnailPhoto">
+                        <a (click)="openFile(ordersLineExtra.thumbnailPhotoContentType, ordersLineExtra.thumbnailPhoto)">
+                            <img [src]="'data:' + ordersLineExtra.thumbnailPhotoContentType + ';base64,' + ordersLineExtra.thumbnailPhoto" style="max-width: 100%;" alt="ordersLineExtra image"/>
+                        </a>
+                        {{ordersLineExtra.thumbnailPhotoContentType}}, {{byteSize(ordersLineExtra.thumbnailPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.thumbnailPhotoUrl">Thumbnail Photo Url</span></dt>
+                <dd>
+                    <span>{{ordersLineExtra.thumbnailPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.ordersLineExtra.ordersLineVariant">Orders Line Variant</span></dt>
+                <dd>
+                    <div *ngIf="ordersLineExtra.ordersLineVariantId">
+                        <a [routerLink]="['/orders-line-variant', ordersLineExtra.ordersLineVariantId, 'view']">{{ordersLineExtra.ordersLineVariantId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/orders-line-extra', ordersLineExtra.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

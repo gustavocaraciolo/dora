@@ -1,0 +1,85 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-product-category-heading" jhiTranslate="doraApp.productCategory.home.createOrEditLabel">Create or edit a Product Category</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!productCategory.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="productCategory.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.category" for="field_category">Category</label>
+                    <input type="text" class="form-control" name="category" id="field_category"
+                        [(ngModel)]="productCategory.category" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="productCategory.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.imageFull" for="field_imageFull">Image Full</label>
+                    <div>
+                        <img [src]="'data:' + productCategory.imageFullContentType + ';base64,' + productCategory.imageFull" style="max-height: 100px;" *ngIf="productCategory.imageFull" alt="productCategory image"/>
+                        <div *ngIf="productCategory.imageFull" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{productCategory.imageFullContentType}}, {{byteSize(productCategory.imageFull)}}</span>
+                            <button type="button" (click)="clearInputImage('imageFull', 'imageFullContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_imageFull" (change)="setFileData($event, productCategory, 'imageFull', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="imageFull" id="field_imageFull"
+                        [(ngModel)]="productCategory.imageFull" />
+                    <input type="hidden" class="form-control" name="imageFullContentType" id="field_imageFullContentType"
+                        [(ngModel)]="productCategory.imageFullContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.imageFullUrl" for="field_imageFullUrl">Image Full Url</label>
+                    <input type="text" class="form-control" name="imageFullUrl" id="field_imageFullUrl"
+                        [(ngModel)]="productCategory.imageFullUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.imageThumb" for="field_imageThumb">Image Thumb</label>
+                    <div>
+                        <img [src]="'data:' + productCategory.imageThumbContentType + ';base64,' + productCategory.imageThumb" style="max-height: 100px;" *ngIf="productCategory.imageThumb" alt="productCategory image"/>
+                        <div *ngIf="productCategory.imageThumb" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{productCategory.imageThumbContentType}}, {{byteSize(productCategory.imageThumb)}}</span>
+                            <button type="button" (click)="clearInputImage('imageThumb', 'imageThumbContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_imageThumb" (change)="setFileData($event, productCategory, 'imageThumb', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="imageThumb" id="field_imageThumb"
+                        [(ngModel)]="productCategory.imageThumb" />
+                    <input type="hidden" class="form-control" name="imageThumbContentType" id="field_imageThumbContentType"
+                        [(ngModel)]="productCategory.imageThumbContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.imageThumbUrl" for="field_imageThumbUrl">Image Thumb Url</label>
+                    <input type="text" class="form-control" name="imageThumbUrl" id="field_imageThumbUrl"
+                        [(ngModel)]="productCategory.imageThumbUrl" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.productCategory.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="productCategory.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

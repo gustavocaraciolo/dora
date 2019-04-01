@@ -1,0 +1,120 @@
+{
+    "name": "Orders",
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "customerName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "totalPrice",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "discountPercentage",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "discountAmount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "taxPercentage",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "taxAmount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "orderStatus",
+            "fieldType": "OrderStatus",
+            "fieldValues": "INCOMPLETE,COMPLETED,PENDING,READY,CANCELLED,REFUNDED"
+        },
+        {
+            "fieldName": "note",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "orderDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "isVariantOrder",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ordersLine",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "ordersLines"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "paymentMethod",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "paymentMethod",
+            "otherEntityField": "paymentMethod"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profile",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "soldBy",
+            "otherEntityField": "firstName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profile",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "preparedBy",
+            "otherEntityField": "firstName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shopDevice",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "shopDevice",
+            "otherEntityField": "deviceName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sectionTable",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "sectionTable",
+            "otherEntityField": "tableNumber"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "orders",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        }
+    ],
+    "changelogDate": "20190331011358",
+    "entityTableName": "orders",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

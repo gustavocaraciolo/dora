@@ -1,0 +1,107 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.ordersLineExtra.home.title">Orders Line Extras</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-orders-line-extra" [routerLink]="['/orders-line-extra/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.ordersLineExtra.home.createLabel">
+            Create new Orders Line Extra
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.ordersLineExtra.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="ordersLineExtras">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ordersLineExtraName"><span jhiTranslate="doraApp.ordersLineExtra.ordersLineExtraName">Orders Line Extra Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ordersLineExtraValue"><span jhiTranslate="doraApp.ordersLineExtra.ordersLineExtraValue">Orders Line Extra Value</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ordersLineExtraPrice"><span jhiTranslate="doraApp.ordersLineExtra.ordersLineExtraPrice">Orders Line Extra Price</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ordersOptionDescription"><span jhiTranslate="doraApp.ordersLineExtra.ordersOptionDescription">Orders Option Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="fullPhoto"><span jhiTranslate="doraApp.ordersLineExtra.fullPhoto">Full Photo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="fullPhotoUrl"><span jhiTranslate="doraApp.ordersLineExtra.fullPhotoUrl">Full Photo Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="thumbnailPhoto"><span jhiTranslate="doraApp.ordersLineExtra.thumbnailPhoto">Thumbnail Photo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="thumbnailPhotoUrl"><span jhiTranslate="doraApp.ordersLineExtra.thumbnailPhotoUrl">Thumbnail Photo Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="ordersLineVariantId"><span jhiTranslate="doraApp.ordersLineExtra.ordersLineVariant">Orders Line Variant</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let ordersLineExtra of ordersLineExtras ;trackBy: trackId">
+                <td><a [routerLink]="['/orders-line-extra', ordersLineExtra.id, 'view' ]">{{ordersLineExtra.id}}</a></td>
+                <td>{{ordersLineExtra.ordersLineExtraName}}</td>
+                <td>{{ordersLineExtra.ordersLineExtraValue}}</td>
+                <td>{{ordersLineExtra.ordersLineExtraPrice}}</td>
+                <td>{{ordersLineExtra.ordersOptionDescription}}</td>
+                <td>
+                    <a *ngIf="ordersLineExtra.fullPhoto" (click)="openFile(ordersLineExtra.fullPhotoContentType, ordersLineExtra.fullPhoto)">
+                        <img [src]="'data:' + ordersLineExtra.fullPhotoContentType + ';base64,' + ordersLineExtra.fullPhoto" style="max-height: 30px;" alt="ordersLineExtra image"/>
+                    </a>
+                    <span *ngIf="ordersLineExtra.fullPhoto">{{ordersLineExtra.fullPhotoContentType}}, {{byteSize(ordersLineExtra.fullPhoto)}}</span>
+                </td>
+                <td>{{ordersLineExtra.fullPhotoUrl}}</td>
+                <td>
+                    <a *ngIf="ordersLineExtra.thumbnailPhoto" (click)="openFile(ordersLineExtra.thumbnailPhotoContentType, ordersLineExtra.thumbnailPhoto)">
+                        <img [src]="'data:' + ordersLineExtra.thumbnailPhotoContentType + ';base64,' + ordersLineExtra.thumbnailPhoto" style="max-height: 30px;" alt="ordersLineExtra image"/>
+                    </a>
+                    <span *ngIf="ordersLineExtra.thumbnailPhoto">{{ordersLineExtra.thumbnailPhotoContentType}}, {{byteSize(ordersLineExtra.thumbnailPhoto)}}</span>
+                </td>
+                <td>{{ordersLineExtra.thumbnailPhotoUrl}}</td>
+                <td>
+                    <div *ngIf="ordersLineExtra.ordersLineVariantId">
+                        <a [routerLink]="['../orders-line-variant', ordersLineExtra.ordersLineVariantId , 'view' ]" >{{ordersLineExtra.ordersLineVariantId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/orders-line-extra', ordersLineExtra.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/orders-line-extra', ordersLineExtra.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'orders-line-extra', { outlets: { popup: ordersLineExtra.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="ordersLineExtras && ordersLineExtras.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

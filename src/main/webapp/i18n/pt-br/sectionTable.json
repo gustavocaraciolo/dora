@@ -1,0 +1,24 @@
+{
+    "doraApp": {
+        "sectionTable": {
+            "home": {
+                "title": "Section Tables",
+                "createLabel": "Criar novo Section Table",
+                "createOrEditLabel": "Criar ou editar Section Table",
+                "search": "Pesquisar por Section Table"
+            },
+            "created": "Um novo Section Table foi criado com o identificador {{ param }}",
+            "updated": "Um Section Table foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Section Table foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Section Table {{ id }}?"
+            },
+            "detail": {
+                "title": "Section Table"
+            },
+            "tableNumber": "Table Number",
+            "description": "Description",
+            "shopSections": "Shop Sections"
+        }
+    }
+}

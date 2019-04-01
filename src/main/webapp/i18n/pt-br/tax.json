@@ -1,0 +1,27 @@
+{
+    "doraApp": {
+        "tax": {
+            "home": {
+                "title": "Taxes",
+                "createLabel": "Criar novo Tax",
+                "createOrEditLabel": "Criar ou editar Tax",
+                "search": "Pesquisar por Tax"
+            },
+            "created": "Um novo Tax foi criado com o identificador {{ param }}",
+            "updated": "Um Tax foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Tax foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Tax {{ id }}?"
+            },
+            "detail": {
+                "title": "Tax"
+            },
+            "description": "Description",
+            "percentage": "Percentage",
+            "amount": "Amount",
+            "active": "Active",
+            "shop": "Shop",
+            "product": "Product"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "doraApp": {
+        "shopChange": {
+            "home": {
+                "title": "Shop Changes",
+                "createLabel": "Criar novo Shop Change",
+                "createOrEditLabel": "Criar ou editar Shop Change",
+                "search": "Pesquisar por Shop Change"
+            },
+            "created": "Um novo Shop Change foi criado com o identificador {{ param }}",
+            "updated": "Um Shop Change foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Shop Change foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Shop Change {{ id }}?"
+            },
+            "detail": {
+                "title": "Shop Change"
+            },
+            "change": "Change",
+            "changedEntity": "Changed Entity",
+            "note": "Note",
+            "changeDate": "Change Date",
+            "shop": "Shop",
+            "changedBy": "Changed By"
+        }
+    }
+}

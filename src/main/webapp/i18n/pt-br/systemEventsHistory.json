@@ -1,0 +1,28 @@
+{
+    "doraApp": {
+        "systemEventsHistory": {
+            "home": {
+                "title": "System Events Histories",
+                "createLabel": "Criar novo System Events History",
+                "createOrEditLabel": "Criar ou editar System Events History",
+                "search": "Pesquisar por System Events History"
+            },
+            "created": "Um novo System Events History foi criado com o identificador {{ param }}",
+            "updated": "Um System Events History foi atualizado com o identificador {{ param }}",
+            "deleted": "Um System Events History foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir System Events History {{ id }}?"
+            },
+            "detail": {
+                "title": "System Events History"
+            },
+            "eventName": "Event Name",
+            "eventDate": "Event Date",
+            "eventApi": "Event Api",
+            "eventNote": "Event Note",
+            "eventEntityName": "Event Entity Name",
+            "eventEntityId": "Event Entity Id",
+            "triggedBy": "Trigged By"
+        }
+    }
+}

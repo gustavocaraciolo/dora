@@ -1,0 +1,110 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-orders-line-variant-heading" jhiTranslate="doraApp.ordersLineVariant.home.createOrEditLabel">Create or edit a Orders Line Variant</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!ordersLineVariant.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="ordersLineVariant.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.variantName" for="field_variantName">Variant Name</label>
+                    <input type="text" class="form-control" name="variantName" id="field_variantName"
+                        [(ngModel)]="ordersLineVariant.variantName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.variantValue" for="field_variantValue">Variant Value</label>
+                    <input type="text" class="form-control" name="variantValue" id="field_variantValue"
+                        [(ngModel)]="ordersLineVariant.variantValue" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="ordersLineVariant.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.percentage" for="field_percentage">Percentage</label>
+                    <input type="number" class="form-control" name="percentage" id="field_percentage"
+                        [(ngModel)]="ordersLineVariant.percentage" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.fullPhoto" for="field_fullPhoto">Full Photo</label>
+                    <div>
+                        <img [src]="'data:' + ordersLineVariant.fullPhotoContentType + ';base64,' + ordersLineVariant.fullPhoto" style="max-height: 100px;" *ngIf="ordersLineVariant.fullPhoto" alt="ordersLineVariant image"/>
+                        <div *ngIf="ordersLineVariant.fullPhoto" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ordersLineVariant.fullPhotoContentType}}, {{byteSize(ordersLineVariant.fullPhoto)}}</span>
+                            <button type="button" (click)="clearInputImage('fullPhoto', 'fullPhotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_fullPhoto" (change)="setFileData($event, ordersLineVariant, 'fullPhoto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="fullPhoto" id="field_fullPhoto"
+                        [(ngModel)]="ordersLineVariant.fullPhoto" />
+                    <input type="hidden" class="form-control" name="fullPhotoContentType" id="field_fullPhotoContentType"
+                        [(ngModel)]="ordersLineVariant.fullPhotoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.fullPhotoUrl" for="field_fullPhotoUrl">Full Photo Url</label>
+                    <input type="text" class="form-control" name="fullPhotoUrl" id="field_fullPhotoUrl"
+                        [(ngModel)]="ordersLineVariant.fullPhotoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.thumbnailPhoto" for="field_thumbnailPhoto">Thumbnail Photo</label>
+                    <div>
+                        <img [src]="'data:' + ordersLineVariant.thumbnailPhotoContentType + ';base64,' + ordersLineVariant.thumbnailPhoto" style="max-height: 100px;" *ngIf="ordersLineVariant.thumbnailPhoto" alt="ordersLineVariant image"/>
+                        <div *ngIf="ordersLineVariant.thumbnailPhoto" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{ordersLineVariant.thumbnailPhotoContentType}}, {{byteSize(ordersLineVariant.thumbnailPhoto)}}</span>
+                            <button type="button" (click)="clearInputImage('thumbnailPhoto', 'thumbnailPhotoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_thumbnailPhoto" (change)="setFileData($event, ordersLineVariant, 'thumbnailPhoto', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="thumbnailPhoto" id="field_thumbnailPhoto"
+                        [(ngModel)]="ordersLineVariant.thumbnailPhoto" />
+                    <input type="hidden" class="form-control" name="thumbnailPhotoContentType" id="field_thumbnailPhotoContentType"
+                        [(ngModel)]="ordersLineVariant.thumbnailPhotoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.thumbnailPhotoUrl" for="field_thumbnailPhotoUrl">Thumbnail Photo Url</label>
+                    <input type="text" class="form-control" name="thumbnailPhotoUrl" id="field_thumbnailPhotoUrl"
+                        [(ngModel)]="ordersLineVariant.thumbnailPhotoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.price" for="field_price">Price</label>
+                    <input type="number" class="form-control" name="price" id="field_price"
+                        [(ngModel)]="ordersLineVariant.price" required/>
+                    <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.price?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.price?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.ordersLineVariant.ordersLine" for="field_ordersLine">Orders Line</label>
+                    <select class="form-control" id="field_ordersLine" name="ordersLine" [(ngModel)]="ordersLineVariant.ordersLineId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ordersLineOption.id" *ngFor="let ordersLineOption of orderslines; trackBy: trackOrdersLineById">{{ordersLineOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{
+    "doraApp": {
+        "ordersLineExtra": {
+            "home": {
+                "title": "Orders Line Extras",
+                "createLabel": "Criar novo Orders Line Extra",
+                "createOrEditLabel": "Criar ou editar Orders Line Extra",
+                "search": "Pesquisar por Orders Line Extra"
+            },
+            "created": "Um novo Orders Line Extra foi criado com o identificador {{ param }}",
+            "updated": "Um Orders Line Extra foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Orders Line Extra foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Orders Line Extra {{ id }}?"
+            },
+            "detail": {
+                "title": "Orders Line Extra"
+            },
+            "ordersLineExtraName": "Orders Line Extra Name",
+            "ordersLineExtraValue": "Orders Line Extra Value",
+            "ordersLineExtraPrice": "Orders Line Extra Price",
+            "ordersOptionDescription": "Orders Option Description",
+            "fullPhoto": "Full Photo",
+            "fullPhotoUrl": "Full Photo Url",
+            "thumbnailPhoto": "Thumbnail Photo",
+            "thumbnailPhotoUrl": "Thumbnail Photo Url",
+            "ordersLineVariant": "Orders Line Variant"
+        }
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "doraApp": {
+        "profile": {
+            "home": {
+                "title": "Profiles",
+                "createLabel": "Criar novo Profile",
+                "createOrEditLabel": "Criar ou editar Profile",
+                "search": "Pesquisar por Profile"
+            },
+            "created": "Um novo Profile foi criado com o identificador {{ param }}",
+            "updated": "Um Profile foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Profile foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Profile {{ id }}?"
+            },
+            "detail": {
+                "title": "Profile"
+            },
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "userType": "User Type",
+            "dateOfBirth": "Date Of Birth",
+            "gender": "Gender",
+            "registerationDate": "Registeration Date",
+            "lastAccess": "Last Access",
+            "profileStatus": "Profile Status",
+            "telephone": "Telephone",
+            "mobile": "Mobile",
+            "hourlyPayRate": "Hourly Pay Rate",
+            "thumbnailPhoto": "Thumbnail Photo",
+            "thumbnailPhotoUrl": "Thumbnail Photo Url",
+            "fullPhoto": "Full Photo",
+            "fullPhotoUrl": "Full Photo Url",
+            "active": "Active",
+            "shopChangeId": "Shop Change Id",
+            "user": "User",
+            "shop": "Shop"
+        }
+    }
+}

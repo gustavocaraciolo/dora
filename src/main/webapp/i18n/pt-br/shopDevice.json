@@ -1,0 +1,25 @@
+{
+    "doraApp": {
+        "shopDevice": {
+            "home": {
+                "title": "Shop Devices",
+                "createLabel": "Criar novo Shop Device",
+                "createOrEditLabel": "Criar ou editar Shop Device",
+                "search": "Pesquisar por Shop Device"
+            },
+            "created": "Um novo Shop Device foi criado com o identificador {{ param }}",
+            "updated": "Um Shop Device foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Shop Device foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Shop Device {{ id }}?"
+            },
+            "detail": {
+                "title": "Shop Device"
+            },
+            "deviceName": "Device Name",
+            "deviceModel": "Device Model",
+            "registeredDate": "Registered Date",
+            "shop": "Shop"
+        }
+    }
+}

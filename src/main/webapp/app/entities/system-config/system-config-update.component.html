@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-system-config-heading" jhiTranslate="doraApp.systemConfig.home.createOrEditLabel">Create or edit a System Config</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!systemConfig.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="systemConfig.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.systemConfig.key" for="field_key">Key</label>
+                    <input type="text" class="form-control" name="key" id="field_key"
+                        [(ngModel)]="systemConfig.key" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.systemConfig.value" for="field_value">Value</label>
+                    <input type="text" class="form-control" name="value" id="field_value"
+                        [(ngModel)]="systemConfig.value" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.systemConfig.configurationType" for="field_configurationType">Configuration Type</label>
+                    <select class="form-control" name="configurationType" [(ngModel)]="systemConfig.configurationType" id="field_configurationType" >
+                        <option value="STRING">{{'doraApp.ConfigType.STRING' | translate}}</option>
+                        <option value="BOOLEAN">{{'doraApp.ConfigType.BOOLEAN' | translate}}</option>
+                        <option value="NUMBER">{{'doraApp.ConfigType.NUMBER' | translate}}</option>
+                        <option value="DATE">{{'doraApp.ConfigType.DATE' | translate}}</option>
+                        <option value="FILE">{{'doraApp.ConfigType.FILE' | translate}}</option>
+                        <option value="OBJECT">{{'doraApp.ConfigType.OBJECT' | translate}}</option>
+                        <option value="ARRAY">{{'doraApp.ConfigType.ARRAY' | translate}}</option>
+                        <option value="GEO_POINT">{{'doraApp.ConfigType.GEO_POINT' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.systemConfig.note" for="field_note">Note</label>
+                    <input type="text" class="form-control" name="note" id="field_note"
+                        [(ngModel)]="systemConfig.note" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.systemConfig.enabled" for="field_enabled">Enabled</label>
+                    <input type="checkbox" class="form-control" name="enabled" id="field_enabled"
+                        [(ngModel)]="systemConfig.enabled" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.systemConfig.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="systemConfig.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

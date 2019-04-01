@@ -1,0 +1,154 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-orders-heading" jhiTranslate="doraApp.orders.home.createOrEditLabel">Create or edit a Orders</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!orders.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="orders.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="orders.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.customerName" for="field_customerName">Customer Name</label>
+                    <input type="text" class="form-control" name="customerName" id="field_customerName"
+                        [(ngModel)]="orders.customerName" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.totalPrice" for="field_totalPrice">Total Price</label>
+                    <input type="number" class="form-control" name="totalPrice" id="field_totalPrice"
+                        [(ngModel)]="orders.totalPrice" required/>
+                    <div [hidden]="!(editForm.controls.totalPrice?.dirty && editForm.controls.totalPrice?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.totalPrice?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.totalPrice?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.quantity" for="field_quantity">Quantity</label>
+                    <input type="number" class="form-control" name="quantity" id="field_quantity"
+                        [(ngModel)]="orders.quantity" required/>
+                    <div [hidden]="!(editForm.controls.quantity?.dirty && editForm.controls.quantity?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.quantity?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.controls.quantity?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.discountPercentage" for="field_discountPercentage">Discount Percentage</label>
+                    <input type="number" class="form-control" name="discountPercentage" id="field_discountPercentage"
+                        [(ngModel)]="orders.discountPercentage" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.discountAmount" for="field_discountAmount">Discount Amount</label>
+                    <input type="number" class="form-control" name="discountAmount" id="field_discountAmount"
+                        [(ngModel)]="orders.discountAmount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.taxPercentage" for="field_taxPercentage">Tax Percentage</label>
+                    <input type="number" class="form-control" name="taxPercentage" id="field_taxPercentage"
+                        [(ngModel)]="orders.taxPercentage" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.taxAmount" for="field_taxAmount">Tax Amount</label>
+                    <input type="number" class="form-control" name="taxAmount" id="field_taxAmount"
+                        [(ngModel)]="orders.taxAmount" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.orderStatus" for="field_orderStatus">Order Status</label>
+                    <select class="form-control" name="orderStatus" [(ngModel)]="orders.orderStatus" id="field_orderStatus" >
+                        <option value="INCOMPLETE">{{'doraApp.OrderStatus.INCOMPLETE' | translate}}</option>
+                        <option value="COMPLETED">{{'doraApp.OrderStatus.COMPLETED' | translate}}</option>
+                        <option value="PENDING">{{'doraApp.OrderStatus.PENDING' | translate}}</option>
+                        <option value="READY">{{'doraApp.OrderStatus.READY' | translate}}</option>
+                        <option value="CANCELLED">{{'doraApp.OrderStatus.CANCELLED' | translate}}</option>
+                        <option value="REFUNDED">{{'doraApp.OrderStatus.REFUNDED' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.note" for="field_note">Note</label>
+                    <input type="text" class="form-control" name="note" id="field_note"
+                        [(ngModel)]="orders.note" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.orderDate" for="field_orderDate">Order Date</label>
+                    <div class="d-flex">
+                        <input id="field_orderDate" type="datetime-local" class="form-control" name="orderDate" [(ngModel)]="orderDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.isVariantOrder" for="field_isVariantOrder">Is Variant Order</label>
+                    <input type="checkbox" class="form-control" name="isVariantOrder" id="field_isVariantOrder"
+                        [(ngModel)]="orders.isVariantOrder" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.paymentMethod" for="field_paymentMethod">Payment Method</label>
+                    <select class="form-control" id="field_paymentMethod" name="paymentMethod" [(ngModel)]="orders.paymentMethodId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="paymentMethodOption.id" *ngFor="let paymentMethodOption of paymentmethods; trackBy: trackPaymentMethodById">{{paymentMethodOption.paymentMethod}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.soldBy" for="field_soldBy">Sold By</label>
+                    <select class="form-control" id="field_soldBy" name="soldBy" [(ngModel)]="orders.soldById" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.preparedBy" for="field_preparedBy">Prepared By</label>
+                    <select class="form-control" id="field_preparedBy" name="preparedBy" [(ngModel)]="orders.preparedById" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.shopDevice" for="field_shopDevice">Shop Device</label>
+                    <select class="form-control" id="field_shopDevice" name="shopDevice" [(ngModel)]="orders.shopDeviceId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopDeviceOption.id" *ngFor="let shopDeviceOption of shopdevices; trackBy: trackShopDeviceById">{{shopDeviceOption.deviceName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.sectionTable" for="field_sectionTable">Section Table</label>
+                    <select class="form-control" id="field_sectionTable" name="sectionTable" [(ngModel)]="orders.sectionTableId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="sectionTableOption.id" *ngFor="let sectionTableOption of sectiontables; trackBy: trackSectionTableById">{{sectionTableOption.tableNumber}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.orders.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="orders.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

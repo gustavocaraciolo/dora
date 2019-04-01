@@ -1,0 +1,93 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.systemEventsHistory.home.title">System Events Histories</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-system-events-history" [routerLink]="['/system-events-history/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.systemEventsHistory.home.createLabel">
+            Create new System Events History
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.systemEventsHistory.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="systemEventsHistories">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventName"><span jhiTranslate="doraApp.systemEventsHistory.eventName">Event Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventDate"><span jhiTranslate="doraApp.systemEventsHistory.eventDate">Event Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventApi"><span jhiTranslate="doraApp.systemEventsHistory.eventApi">Event Api</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventNote"><span jhiTranslate="doraApp.systemEventsHistory.eventNote">Event Note</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventEntityName"><span jhiTranslate="doraApp.systemEventsHistory.eventEntityName">Event Entity Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="eventEntityId"><span jhiTranslate="doraApp.systemEventsHistory.eventEntityId">Event Entity Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="triggedByFirstName"><span jhiTranslate="doraApp.systemEventsHistory.triggedBy">Trigged By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let systemEventsHistory of systemEventsHistories ;trackBy: trackId">
+                <td><a [routerLink]="['/system-events-history', systemEventsHistory.id, 'view' ]">{{systemEventsHistory.id}}</a></td>
+                <td>{{systemEventsHistory.eventName}}</td>
+                <td>{{systemEventsHistory.eventDate | date:'medium'}}</td>
+                <td>{{systemEventsHistory.eventApi}}</td>
+                <td>{{systemEventsHistory.eventNote}}</td>
+                <td>{{systemEventsHistory.eventEntityName}}</td>
+                <td>{{systemEventsHistory.eventEntityId}}</td>
+                <td>
+                    <div *ngIf="systemEventsHistory.triggedById">
+                        <a [routerLink]="['../profile', systemEventsHistory.triggedById , 'view' ]" >{{systemEventsHistory.triggedByFirstName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/system-events-history', systemEventsHistory.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/system-events-history', systemEventsHistory.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'system-events-history', { outlets: { popup: systemEventsHistory.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="systemEventsHistories && systemEventsHistories.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

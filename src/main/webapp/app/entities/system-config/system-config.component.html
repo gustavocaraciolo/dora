@@ -1,0 +1,91 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.systemConfig.home.title">System Configs</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-system-config" [routerLink]="['/system-config/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.systemConfig.home.createLabel">
+            Create new System Config
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.systemConfig.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="systemConfigs">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="key"><span jhiTranslate="doraApp.systemConfig.key">Key</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="value"><span jhiTranslate="doraApp.systemConfig.value">Value</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="configurationType"><span jhiTranslate="doraApp.systemConfig.configurationType">Configuration Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="note"><span jhiTranslate="doraApp.systemConfig.note">Note</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="enabled"><span jhiTranslate="doraApp.systemConfig.enabled">Enabled</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopShopName"><span jhiTranslate="doraApp.systemConfig.shop">Shop</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let systemConfig of systemConfigs ;trackBy: trackId">
+                <td><a [routerLink]="['/system-config', systemConfig.id, 'view' ]">{{systemConfig.id}}</a></td>
+                <td>{{systemConfig.key}}</td>
+                <td>{{systemConfig.value}}</td>
+                <td jhiTranslate="{{'doraApp.ConfigType.' + systemConfig.configurationType}}">{{systemConfig.configurationType}}</td>
+                <td>{{systemConfig.note}}</td>
+                <td>{{systemConfig.enabled}}</td>
+                <td>
+                    <div *ngIf="systemConfig.shopId">
+                        <a [routerLink]="['../shop', systemConfig.shopId , 'view' ]" >{{systemConfig.shopShopName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/system-config', systemConfig.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/system-config', systemConfig.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'system-config', { outlets: { popup: systemConfig.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="systemConfigs && systemConfigs.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

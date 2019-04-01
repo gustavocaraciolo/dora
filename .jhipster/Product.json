@@ -1,0 +1,134 @@
+{
+    "name": "Product",
+    "fields": [
+        {
+            "fieldName": "productName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 30
+        },
+        {
+            "fieldName": "productDescription",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 99
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "productImageFull",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "productImageFullUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "productImageThumb",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "productImageThumbUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateCreated",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "barcode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "serialCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "priorityPosition",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "isVariantProduct",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "productVariant",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "variants"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "productExtra",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "extras"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "productType",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "productTypes",
+            "otherEntityField": "productType"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "discount",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "discounts",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tax",
+            "otherEntityRelationshipName": "product",
+            "relationshipName": "taxes",
+            "otherEntityField": "description"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "productCategory",
+            "otherEntityRelationshipName": "products",
+            "relationshipName": "category",
+            "otherEntityField": "category"
+        }
+    ],
+    "changelogDate": "20190331011349",
+    "entityTableName": "product",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

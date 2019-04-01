@@ -1,0 +1,115 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="profile">
+            <h2><span jhiTranslate="doraApp.profile.detail.title">Profile</span> {{profile.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.profile.firstName">First Name</span></dt>
+                <dd>
+                    <span>{{profile.firstName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.lastName">Last Name</span></dt>
+                <dd>
+                    <span>{{profile.lastName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.email">Email</span></dt>
+                <dd>
+                    <span>{{profile.email}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.userType">User Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'doraApp.ProfileType.' + profile.userType}}">{{profile.userType}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.dateOfBirth">Date Of Birth</span></dt>
+                <dd>
+                    <span>{{profile.dateOfBirth}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.gender">Gender</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'doraApp.Gender.' + profile.gender}}">{{profile.gender}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.registerationDate">Registeration Date</span></dt>
+                <dd>
+                    <span>{{profile.registerationDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.lastAccess">Last Access</span></dt>
+                <dd>
+                    <span>{{profile.lastAccess}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.profileStatus">Profile Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'doraApp.ProfileStatus.' + profile.profileStatus}}">{{profile.profileStatus}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.telephone">Telephone</span></dt>
+                <dd>
+                    <span>{{profile.telephone}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.mobile">Mobile</span></dt>
+                <dd>
+                    <span>{{profile.mobile}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.hourlyPayRate">Hourly Pay Rate</span></dt>
+                <dd>
+                    <span>{{profile.hourlyPayRate}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.thumbnailPhoto">Thumbnail Photo</span></dt>
+                <dd>
+                    <div *ngIf="profile.thumbnailPhoto">
+                        <a (click)="openFile(profile.thumbnailPhotoContentType, profile.thumbnailPhoto)">
+                            <img [src]="'data:' + profile.thumbnailPhotoContentType + ';base64,' + profile.thumbnailPhoto" style="max-width: 100%;" alt="profile image"/>
+                        </a>
+                        {{profile.thumbnailPhotoContentType}}, {{byteSize(profile.thumbnailPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.thumbnailPhotoUrl">Thumbnail Photo Url</span></dt>
+                <dd>
+                    <span>{{profile.thumbnailPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.fullPhoto">Full Photo</span></dt>
+                <dd>
+                    <div *ngIf="profile.fullPhoto">
+                        <a (click)="openFile(profile.fullPhotoContentType, profile.fullPhoto)">
+                            <img [src]="'data:' + profile.fullPhotoContentType + ';base64,' + profile.fullPhoto" style="max-width: 100%;" alt="profile image"/>
+                        </a>
+                        {{profile.fullPhotoContentType}}, {{byteSize(profile.fullPhoto)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.fullPhotoUrl">Full Photo Url</span></dt>
+                <dd>
+                    <span>{{profile.fullPhotoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.active">Active</span></dt>
+                <dd>
+                    <span>{{profile.active}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.shopChangeId">Shop Change Id</span></dt>
+                <dd>
+                    <span>{{profile.shopChangeId}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.user">User</span></dt>
+                <dd>
+                    {{profile.userFirstName}}
+                </dd>
+                <dt><span jhiTranslate="doraApp.profile.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="profile.shopId">
+                        <a [routerLink]="['/shop', profile.shopId, 'view']">{{profile.shopShopName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/profile', profile.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

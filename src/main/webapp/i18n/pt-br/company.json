@@ -1,0 +1,27 @@
+{
+    "doraApp": {
+        "company": {
+            "home": {
+                "title": "Companies",
+                "createLabel": "Criar novo Company",
+                "createOrEditLabel": "Criar ou editar Company",
+                "search": "Pesquisar por Company"
+            },
+            "created": "Um novo Company foi criado com o identificador {{ param }}",
+            "updated": "Um Company foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Company foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Company {{ id }}?"
+            },
+            "detail": {
+                "title": "Company"
+            },
+            "companyName": "Company Name",
+            "description": "Description",
+            "note": "Note",
+            "companyLogo": "Company Logo",
+            "companyLogoUrl": "Company Logo Url",
+            "active": "Active"
+        }
+    }
+}

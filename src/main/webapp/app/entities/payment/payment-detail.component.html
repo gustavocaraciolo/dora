@@ -1,0 +1,71 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="payment">
+            <h2><span jhiTranslate="doraApp.payment.detail.title">Payment</span> {{payment.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.payment.paymentDate">Payment Date</span></dt>
+                <dd>
+                    <span>{{payment.paymentDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.paymentProvider">Payment Provider</span></dt>
+                <dd>
+                    <span>{{payment.paymentProvider}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.amount">Amount</span></dt>
+                <dd>
+                    <span>{{payment.amount}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.paymentStatus">Payment Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'doraApp.PaymentStatus.' + payment.paymentStatus}}">{{payment.paymentStatus}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.curency">Curency</span></dt>
+                <dd>
+                    <span>{{payment.curency}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.customerName">Customer Name</span></dt>
+                <dd>
+                    <span>{{payment.customerName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="payment.shopId">
+                        <a [routerLink]="['/shop', payment.shopId, 'view']">{{payment.shopShopName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.processedBy">Processed By</span></dt>
+                <dd>
+                    <div *ngIf="payment.processedById">
+                        <a [routerLink]="['/profile', payment.processedById, 'view']">{{payment.processedByFirstName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.paymentMethod">Payment Method</span></dt>
+                <dd>
+                    <div *ngIf="payment.paymentMethodId">
+                        <a [routerLink]="['/payment-method', payment.paymentMethodId, 'view']">{{payment.paymentMethodPaymentMethod}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.payment.order">Order</span></dt>
+                <dd>
+                    <div *ngIf="payment.orderId">
+                        <a [routerLink]="['/orders', payment.orderId, 'view']">{{payment.orderDescription}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/payment', payment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

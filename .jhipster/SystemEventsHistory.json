@@ -1,0 +1,51 @@
+{
+    "name": "SystemEventsHistory",
+    "fields": [
+        {
+            "fieldName": "eventName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "eventDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "eventApi",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eventNote",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eventEntityName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "eventEntityId",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profile",
+            "otherEntityRelationshipName": "systemEventsHistory",
+            "relationshipName": "triggedBy",
+            "otherEntityField": "firstName"
+        }
+    ],
+    "changelogDate": "20190331011348",
+    "entityTableName": "system_events_history",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

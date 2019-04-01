@@ -1,0 +1,26 @@
+{
+    "doraApp": {
+        "paymentMethodConfig": {
+            "home": {
+                "title": "Payment Method Configs",
+                "createLabel": "Criar novo Payment Method Config",
+                "createOrEditLabel": "Criar ou editar Payment Method Config",
+                "search": "Pesquisar por Payment Method Config"
+            },
+            "created": "Um novo Payment Method Config foi criado com o identificador {{ param }}",
+            "updated": "Um Payment Method Config foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Payment Method Config foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Payment Method Config {{ id }}?"
+            },
+            "detail": {
+                "title": "Payment Method Config"
+            },
+            "key": "Key",
+            "value": "Value",
+            "note": "Note",
+            "enabled": "Enabled",
+            "paymentMethod": "Payment Method"
+        }
+    }
+}

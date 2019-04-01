@@ -1,0 +1,44 @@
+{
+    "name": "ShopSection",
+    "fields": [
+        {
+            "fieldName": "sectionName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "surchargePercentage",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "surchargeFlatAmount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "usePercentage",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "shopSection",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        }
+    ],
+    "changelogDate": "20190331011346",
+    "entityTableName": "shop_section",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

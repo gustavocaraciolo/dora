@@ -1,0 +1,40 @@
+{
+    "doraApp": {
+        "orders": {
+            "home": {
+                "title": "Orders",
+                "createLabel": "Criar novo Orders",
+                "createOrEditLabel": "Criar ou editar Orders",
+                "search": "Pesquisar por Orders"
+            },
+            "created": "Um novo Orders foi criado com o identificador {{ param }}",
+            "updated": "Um Orders foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Orders foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Orders {{ id }}?"
+            },
+            "detail": {
+                "title": "Orders"
+            },
+            "description": "Description",
+            "customerName": "Customer Name",
+            "totalPrice": "Total Price",
+            "quantity": "Quantity",
+            "discountPercentage": "Discount Percentage",
+            "discountAmount": "Discount Amount",
+            "taxPercentage": "Tax Percentage",
+            "taxAmount": "Tax Amount",
+            "orderStatus": "Order Status",
+            "note": "Note",
+            "orderDate": "Order Date",
+            "isVariantOrder": "Is Variant Order",
+            "ordersLines": "Orders Lines",
+            "paymentMethod": "Payment Method",
+            "soldBy": "Sold By",
+            "preparedBy": "Prepared By",
+            "shopDevice": "Shop Device",
+            "sectionTable": "Section Table",
+            "shop": "Shop"
+        }
+    }
+}

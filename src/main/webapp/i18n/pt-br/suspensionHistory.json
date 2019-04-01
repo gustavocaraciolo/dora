@@ -1,0 +1,28 @@
+{
+    "doraApp": {
+        "suspensionHistory": {
+            "home": {
+                "title": "Suspension Histories",
+                "createLabel": "Criar novo Suspension History",
+                "createOrEditLabel": "Criar ou editar Suspension History",
+                "search": "Pesquisar por Suspension History"
+            },
+            "created": "Um novo Suspension History foi criado com o identificador {{ param }}",
+            "updated": "Um Suspension History foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Suspension History foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Suspension History {{ id }}?"
+            },
+            "detail": {
+                "title": "Suspension History"
+            },
+            "suspendedDate": "Suspended Date",
+            "suspensionType": "Suspension Type",
+            "suspendedReason": "Suspended Reason",
+            "resolutionNote": "Resolution Note",
+            "unsuspensionDate": "Unsuspension Date",
+            "profile": "Profile",
+            "suspendedBy": "Suspended By"
+        }
+    }
+}

@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="emailBalancer">
+            <h2><span jhiTranslate="doraApp.emailBalancer.detail.title">Email Balancer</span> {{emailBalancer.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.emailBalancer.relayId">Relay Id</span></dt>
+                <dd>
+                    <span>{{emailBalancer.relayId}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.emailBalancer.relayPassword">Relay Password</span></dt>
+                <dd>
+                    <span>{{emailBalancer.relayPassword}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.emailBalancer.startingCount">Starting Count</span></dt>
+                <dd>
+                    <span>{{emailBalancer.startingCount}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.emailBalancer.endingCount">Ending Count</span></dt>
+                <dd>
+                    <span>{{emailBalancer.endingCount}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.emailBalancer.provider">Provider</span></dt>
+                <dd>
+                    <span>{{emailBalancer.provider}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.emailBalancer.relayPort">Relay Port</span></dt>
+                <dd>
+                    <span>{{emailBalancer.relayPort}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.emailBalancer.enabled">Enabled</span></dt>
+                <dd>
+                    <span>{{emailBalancer.enabled}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/email-balancer', emailBalancer.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

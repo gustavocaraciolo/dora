@@ -1,0 +1,35 @@
+{
+    "name": "ProductType",
+    "fields": [
+        {
+            "fieldName": "productType",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "productTypeDescription",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "productTypes",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        }
+    ],
+    "changelogDate": "20190331011353",
+    "entityTableName": "product_type",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

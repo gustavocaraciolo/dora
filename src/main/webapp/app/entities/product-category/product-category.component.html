@@ -1,0 +1,103 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.productCategory.home.title">Product Categories</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-product-category" [routerLink]="['/product-category/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.productCategory.home.createLabel">
+            Create new Product Category
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.productCategory.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="productCategories">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="category"><span jhiTranslate="doraApp.productCategory.category">Category</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="doraApp.productCategory.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="imageFull"><span jhiTranslate="doraApp.productCategory.imageFull">Image Full</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="imageFullUrl"><span jhiTranslate="doraApp.productCategory.imageFullUrl">Image Full Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="imageThumb"><span jhiTranslate="doraApp.productCategory.imageThumb">Image Thumb</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="imageThumbUrl"><span jhiTranslate="doraApp.productCategory.imageThumbUrl">Image Thumb Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopShopName"><span jhiTranslate="doraApp.productCategory.shop">Shop</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let productCategory of productCategories ;trackBy: trackId">
+                <td><a [routerLink]="['/product-category', productCategory.id, 'view' ]">{{productCategory.id}}</a></td>
+                <td>{{productCategory.category}}</td>
+                <td>{{productCategory.description}}</td>
+                <td>
+                    <a *ngIf="productCategory.imageFull" (click)="openFile(productCategory.imageFullContentType, productCategory.imageFull)">
+                        <img [src]="'data:' + productCategory.imageFullContentType + ';base64,' + productCategory.imageFull" style="max-height: 30px;" alt="productCategory image"/>
+                    </a>
+                    <span *ngIf="productCategory.imageFull">{{productCategory.imageFullContentType}}, {{byteSize(productCategory.imageFull)}}</span>
+                </td>
+                <td>{{productCategory.imageFullUrl}}</td>
+                <td>
+                    <a *ngIf="productCategory.imageThumb" (click)="openFile(productCategory.imageThumbContentType, productCategory.imageThumb)">
+                        <img [src]="'data:' + productCategory.imageThumbContentType + ';base64,' + productCategory.imageThumb" style="max-height: 30px;" alt="productCategory image"/>
+                    </a>
+                    <span *ngIf="productCategory.imageThumb">{{productCategory.imageThumbContentType}}, {{byteSize(productCategory.imageThumb)}}</span>
+                </td>
+                <td>{{productCategory.imageThumbUrl}}</td>
+                <td>
+                    <div *ngIf="productCategory.shopId">
+                        <a [routerLink]="['../shop', productCategory.shopId , 'view' ]" >{{productCategory.shopShopName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/product-category', productCategory.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/product-category', productCategory.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'product-category', { outlets: { popup: productCategory.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="productCategories && productCategories.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

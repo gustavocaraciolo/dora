@@ -1,0 +1,43 @@
+{
+    "doraApp": {
+        "shop": {
+            "home": {
+                "title": "Shops",
+                "createLabel": "Criar novo Shop",
+                "createOrEditLabel": "Criar ou editar Shop",
+                "search": "Pesquisar por Shop"
+            },
+            "created": "Um novo Shop foi criado com o identificador {{ param }}",
+            "updated": "Um Shop foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Shop foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Shop {{ id }}?"
+            },
+            "detail": {
+                "title": "Shop"
+            },
+            "shopName": "Shop Name",
+            "shopAccountType": "Shop Account Type",
+            "approvalDate": "Approval Date",
+            "address": "Address",
+            "email": "Email",
+            "description": "Description",
+            "note": "Note",
+            "landland": "Landland",
+            "mobile": "Mobile",
+            "createdDate": "Created Date",
+            "shopLogo": "Shop Logo",
+            "shopLogoUrl": "Shop Logo Url",
+            "active": "Active",
+            "currency": "Currency",
+            "company": "Company",
+            "approvedBy": "Approved By",
+            "profiles": "Profiles",
+            "productCategories": "Product Categories",
+            "productTypes": "Product Types",
+            "systemConfigs": "System Configs",
+            "discounts": "Discounts",
+            "taxes": "Taxes"
+        }
+    }
+}

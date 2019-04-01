@@ -1,0 +1,13 @@
+{
+    "doraApp": {
+        "OrderStatus": {
+            "null": "",
+            "INCOMPLETE": "INCOMPLETE",
+            "COMPLETED": "COMPLETED",
+            "PENDING": "PENDING",
+            "READY": "READY",
+            "CANCELLED": "CANCELLED",
+            "REFUNDED": "REFUNDED"
+        }
+    }
+}

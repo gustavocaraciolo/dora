@@ -1,0 +1,120 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="doraApp.shop.home.title">Shops</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-shop" [routerLink]="['/shop/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="doraApp.shop.home.createLabel">
+            Create new Shop
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'doraApp.shop.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="shops">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopName"><span jhiTranslate="doraApp.shop.shopName">Shop Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopAccountType"><span jhiTranslate="doraApp.shop.shopAccountType">Shop Account Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="approvalDate"><span jhiTranslate="doraApp.shop.approvalDate">Approval Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="address"><span jhiTranslate="doraApp.shop.address">Address</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="email"><span jhiTranslate="doraApp.shop.email">Email</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span jhiTranslate="doraApp.shop.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="note"><span jhiTranslate="doraApp.shop.note">Note</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="landland"><span jhiTranslate="doraApp.shop.landland">Landland</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="mobile"><span jhiTranslate="doraApp.shop.mobile">Mobile</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span jhiTranslate="doraApp.shop.createdDate">Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopLogo"><span jhiTranslate="doraApp.shop.shopLogo">Shop Logo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shopLogoUrl"><span jhiTranslate="doraApp.shop.shopLogoUrl">Shop Logo Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="active"><span jhiTranslate="doraApp.shop.active">Active</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="currency"><span jhiTranslate="doraApp.shop.currency">Currency</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="companyCompanyName"><span jhiTranslate="doraApp.shop.company">Company</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="approvedByFirstName"><span jhiTranslate="doraApp.shop.approvedBy">Approved By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let shop of shops ;trackBy: trackId">
+                <td><a [routerLink]="['/shop', shop.id, 'view' ]">{{shop.id}}</a></td>
+                <td>{{shop.shopName}}</td>
+                <td jhiTranslate="{{'doraApp.ShopAccountType.' + shop.shopAccountType}}">{{shop.shopAccountType}}</td>
+                <td>{{shop.approvalDate | date:'medium'}}</td>
+                <td>{{shop.address}}</td>
+                <td>{{shop.email}}</td>
+                <td>{{shop.description}}</td>
+                <td>{{shop.note}}</td>
+                <td>{{shop.landland}}</td>
+                <td>{{shop.mobile}}</td>
+                <td>{{shop.createdDate | date:'medium'}}</td>
+                <td>
+                    <a *ngIf="shop.shopLogo" (click)="openFile(shop.shopLogoContentType, shop.shopLogo)">
+                        <img [src]="'data:' + shop.shopLogoContentType + ';base64,' + shop.shopLogo" style="max-height: 30px;" alt="shop image"/>
+                    </a>
+                    <span *ngIf="shop.shopLogo">{{shop.shopLogoContentType}}, {{byteSize(shop.shopLogo)}}</span>
+                </td>
+                <td>{{shop.shopLogoUrl}}</td>
+                <td>{{shop.active}}</td>
+                <td>{{shop.currency}}</td>
+                <td>
+                    <div *ngIf="shop.companyId">
+                        <a [routerLink]="['../company', shop.companyId , 'view' ]" >{{shop.companyCompanyName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="shop.approvedById">
+                        <a [routerLink]="['../profile', shop.approvedById , 'view' ]" >{{shop.approvedByFirstName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/shop', shop.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/shop', shop.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'shop', { outlets: { popup: shop.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="shops && shops.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

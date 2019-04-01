@@ -1,0 +1,133 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-shop-heading" jhiTranslate="doraApp.shop.home.createOrEditLabel">Create or edit a Shop</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!shop.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="shop.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.shopName" for="field_shopName">Shop Name</label>
+                    <input type="text" class="form-control" name="shopName" id="field_shopName"
+                        [(ngModel)]="shop.shopName" required/>
+                    <div [hidden]="!(editForm.controls.shopName?.dirty && editForm.controls.shopName?.invalid)">
+                        <small class="form-text text-danger"
+                        [hidden]="!editForm.controls.shopName?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.shopAccountType" for="field_shopAccountType">Shop Account Type</label>
+                    <select class="form-control" name="shopAccountType" [(ngModel)]="shop.shopAccountType" id="field_shopAccountType" >
+                        <option value="TRIAL_ACCOUNT">{{'doraApp.ShopAccountType.TRIAL_ACCOUNT' | translate}}</option>
+                        <option value="SILVER_ACCOUNT">{{'doraApp.ShopAccountType.SILVER_ACCOUNT' | translate}}</option>
+                        <option value="GOLD_ACCOUNT">{{'doraApp.ShopAccountType.GOLD_ACCOUNT' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.approvalDate" for="field_approvalDate">Approval Date</label>
+                    <div class="d-flex">
+                        <input id="field_approvalDate" type="datetime-local" class="form-control" name="approvalDate" [(ngModel)]="approvalDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.address" for="field_address">Address</label>
+                    <input type="text" class="form-control" name="address" id="field_address"
+                        [(ngModel)]="shop.address" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.email" for="field_email">Email</label>
+                    <input type="text" class="form-control" name="email" id="field_email"
+                        [(ngModel)]="shop.email" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="shop.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.note" for="field_note">Note</label>
+                    <input type="text" class="form-control" name="note" id="field_note"
+                        [(ngModel)]="shop.note" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.landland" for="field_landland">Landland</label>
+                    <input type="text" class="form-control" name="landland" id="field_landland"
+                        [(ngModel)]="shop.landland" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.mobile" for="field_mobile">Mobile</label>
+                    <input type="text" class="form-control" name="mobile" id="field_mobile"
+                        [(ngModel)]="shop.mobile" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.createdDate" for="field_createdDate">Created Date</label>
+                    <div class="d-flex">
+                        <input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" [(ngModel)]="createdDate" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.shopLogo" for="field_shopLogo">Shop Logo</label>
+                    <div>
+                        <img [src]="'data:' + shop.shopLogoContentType + ';base64,' + shop.shopLogo" style="max-height: 100px;" *ngIf="shop.shopLogo" alt="shop image"/>
+                        <div *ngIf="shop.shopLogo" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{shop.shopLogoContentType}}, {{byteSize(shop.shopLogo)}}</span>
+                            <button type="button" (click)="clearInputImage('shopLogo', 'shopLogoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_shopLogo" (change)="setFileData($event, shop, 'shopLogo', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="shopLogo" id="field_shopLogo"
+                        [(ngModel)]="shop.shopLogo" />
+                    <input type="hidden" class="form-control" name="shopLogoContentType" id="field_shopLogoContentType"
+                        [(ngModel)]="shop.shopLogoContentType" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.shopLogoUrl" for="field_shopLogoUrl">Shop Logo Url</label>
+                    <input type="text" class="form-control" name="shopLogoUrl" id="field_shopLogoUrl"
+                        [(ngModel)]="shop.shopLogoUrl" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.active" for="field_active">Active</label>
+                    <input type="checkbox" class="form-control" name="active" id="field_active"
+                        [(ngModel)]="shop.active" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.currency" for="field_currency">Currency</label>
+                    <input type="text" class="form-control" name="currency" id="field_currency"
+                        [(ngModel)]="shop.currency" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.company" for="field_company">Company</label>
+                    <select class="form-control" id="field_company" name="company" [(ngModel)]="shop.companyId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="companyOption.id" *ngFor="let companyOption of companies; trackBy: trackCompanyById">{{companyOption.companyName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.shop.approvedBy" for="field_approvedBy">Approved By</label>
+                    <select class="form-control" id="field_approvedBy" name="approvedBy" [(ngModel)]="shop.approvedById" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

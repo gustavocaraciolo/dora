@@ -1,0 +1,31 @@
+{
+    "doraApp": {
+        "payment": {
+            "home": {
+                "title": "Payments",
+                "createLabel": "Criar novo Payment",
+                "createOrEditLabel": "Criar ou editar Payment",
+                "search": "Pesquisar por Payment"
+            },
+            "created": "Um novo Payment foi criado com o identificador {{ param }}",
+            "updated": "Um Payment foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Payment foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Payment {{ id }}?"
+            },
+            "detail": {
+                "title": "Payment"
+            },
+            "paymentDate": "Payment Date",
+            "paymentProvider": "Payment Provider",
+            "amount": "Amount",
+            "paymentStatus": "Payment Status",
+            "curency": "Curency",
+            "customerName": "Customer Name",
+            "shop": "Shop",
+            "processedBy": "Processed By",
+            "paymentMethod": "Payment Method",
+            "order": "Order"
+        }
+    }
+}

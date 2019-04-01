@@ -1,0 +1,36 @@
+{
+    "name": "ShopDevice",
+    "fields": [
+        {
+            "fieldName": "deviceName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deviceModel",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "registeredDate",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "shopDevice",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        }
+    ],
+    "changelogDate": "20190331011406",
+    "entityTableName": "shop_device",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

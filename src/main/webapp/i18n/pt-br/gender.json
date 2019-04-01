@@ -1,0 +1,9 @@
+{
+    "doraApp": {
+        "Gender": {
+            "null": "",
+            "MALE": "MALE",
+            "FEMALE": "FEMALE"
+        }
+    }
+}

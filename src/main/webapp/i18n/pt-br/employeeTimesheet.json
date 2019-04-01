@@ -1,0 +1,28 @@
+{
+    "doraApp": {
+        "employeeTimesheet": {
+            "home": {
+                "title": "Employee Timesheets",
+                "createLabel": "Criar novo Employee Timesheet",
+                "createOrEditLabel": "Criar ou editar Employee Timesheet",
+                "search": "Pesquisar por Employee Timesheet"
+            },
+            "created": "Um novo Employee Timesheet foi criado com o identificador {{ param }}",
+            "updated": "Um Employee Timesheet foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Employee Timesheet foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Employee Timesheet {{ id }}?"
+            },
+            "detail": {
+                "title": "Employee Timesheet"
+            },
+            "checkinTime": "Checkin Time",
+            "checkOutTime": "Check Out Time",
+            "regularHoursWorked": "Regular Hours Worked",
+            "overTimeHoursWorked": "Over Time Hours Worked",
+            "pay": "Pay",
+            "profile": "Profile",
+            "shop": "Shop"
+        }
+    }
+}

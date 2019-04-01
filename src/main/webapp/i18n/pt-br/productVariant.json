@@ -1,0 +1,30 @@
+{
+    "doraApp": {
+        "productVariant": {
+            "home": {
+                "title": "Product Variants",
+                "createLabel": "Criar novo Product Variant",
+                "createOrEditLabel": "Criar ou editar Product Variant",
+                "search": "Pesquisar por Product Variant"
+            },
+            "created": "Um novo Product Variant foi criado com o identificador {{ param }}",
+            "updated": "Um Product Variant foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Product Variant foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Product Variant {{ id }}?"
+            },
+            "detail": {
+                "title": "Product Variant"
+            },
+            "variantName": "Variant Name",
+            "description": "Description",
+            "percentage": "Percentage",
+            "fullPhoto": "Full Photo",
+            "fullPhotoUrl": "Full Photo Url",
+            "thumbnailPhoto": "Thumbnail Photo",
+            "thumbnailPhotoUrl": "Thumbnail Photo Url",
+            "price": "Price",
+            "product": "Product"
+        }
+    }
+}

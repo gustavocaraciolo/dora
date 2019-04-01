@@ -1,0 +1,70 @@
+{
+    "name": "Payment",
+    "fields": [
+        {
+            "fieldName": "paymentDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "paymentProvider",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "paymentStatus",
+            "fieldType": "PaymentStatus",
+            "fieldValues": "PENDING,PAID,CANCELLED,REFUNDED,FAILED"
+        },
+        {
+            "fieldName": "curency",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "customerName",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "shop",
+            "otherEntityRelationshipName": "payment",
+            "relationshipName": "shop",
+            "otherEntityField": "shopName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profile",
+            "otherEntityRelationshipName": "payment",
+            "relationshipName": "processedBy",
+            "otherEntityField": "firstName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "paymentMethod",
+            "otherEntityRelationshipName": "payment",
+            "relationshipName": "paymentMethod",
+            "otherEntityField": "paymentMethod"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "orders",
+            "otherEntityRelationshipName": "payment",
+            "relationshipName": "order",
+            "otherEntityField": "description"
+        }
+    ],
+    "changelogDate": "20190331011408",
+    "entityTableName": "payment",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*",
+    "searchEngine": "elasticsearch"
+}

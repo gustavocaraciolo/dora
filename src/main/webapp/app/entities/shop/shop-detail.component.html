@@ -1,0 +1,96 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="shop">
+            <h2><span jhiTranslate="doraApp.shop.detail.title">Shop</span> {{shop.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.shop.shopName">Shop Name</span></dt>
+                <dd>
+                    <span>{{shop.shopName}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.shopAccountType">Shop Account Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'doraApp.ShopAccountType.' + shop.shopAccountType}}">{{shop.shopAccountType}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.approvalDate">Approval Date</span></dt>
+                <dd>
+                    <span>{{shop.approvalDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.address">Address</span></dt>
+                <dd>
+                    <span>{{shop.address}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.email">Email</span></dt>
+                <dd>
+                    <span>{{shop.email}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.description">Description</span></dt>
+                <dd>
+                    <span>{{shop.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.note">Note</span></dt>
+                <dd>
+                    <span>{{shop.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.landland">Landland</span></dt>
+                <dd>
+                    <span>{{shop.landland}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.mobile">Mobile</span></dt>
+                <dd>
+                    <span>{{shop.mobile}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{shop.createdDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.shopLogo">Shop Logo</span></dt>
+                <dd>
+                    <div *ngIf="shop.shopLogo">
+                        <a (click)="openFile(shop.shopLogoContentType, shop.shopLogo)">
+                            <img [src]="'data:' + shop.shopLogoContentType + ';base64,' + shop.shopLogo" style="max-width: 100%;" alt="shop image"/>
+                        </a>
+                        {{shop.shopLogoContentType}}, {{byteSize(shop.shopLogo)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.shopLogoUrl">Shop Logo Url</span></dt>
+                <dd>
+                    <span>{{shop.shopLogoUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.active">Active</span></dt>
+                <dd>
+                    <span>{{shop.active}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.currency">Currency</span></dt>
+                <dd>
+                    <span>{{shop.currency}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.company">Company</span></dt>
+                <dd>
+                    <div *ngIf="shop.companyId">
+                        <a [routerLink]="['/company', shop.companyId, 'view']">{{shop.companyCompanyName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.shop.approvedBy">Approved By</span></dt>
+                <dd>
+                    <div *ngIf="shop.approvedById">
+                        <a [routerLink]="['/profile', shop.approvedById, 'view']">{{shop.approvedByFirstName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/shop', shop.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

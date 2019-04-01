@@ -1,0 +1,27 @@
+{
+    "doraApp": {
+        "shopSection": {
+            "home": {
+                "title": "Shop Sections",
+                "createLabel": "Criar novo Shop Section",
+                "createOrEditLabel": "Criar ou editar Shop Section",
+                "search": "Pesquisar por Shop Section"
+            },
+            "created": "Um novo Shop Section foi criado com o identificador {{ param }}",
+            "updated": "Um Shop Section foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Shop Section foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Shop Section {{ id }}?"
+            },
+            "detail": {
+                "title": "Shop Section"
+            },
+            "sectionName": "Section Name",
+            "description": "Description",
+            "surchargePercentage": "Surcharge Percentage",
+            "surchargeFlatAmount": "Surcharge Flat Amount",
+            "usePercentage": "Use Percentage",
+            "shop": "Shop"
+        }
+    }
+}

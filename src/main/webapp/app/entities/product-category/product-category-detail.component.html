@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="productCategory">
+            <h2><span jhiTranslate="doraApp.productCategory.detail.title">Product Category</span> {{productCategory.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="doraApp.productCategory.category">Category</span></dt>
+                <dd>
+                    <span>{{productCategory.category}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productCategory.description">Description</span></dt>
+                <dd>
+                    <span>{{productCategory.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productCategory.imageFull">Image Full</span></dt>
+                <dd>
+                    <div *ngIf="productCategory.imageFull">
+                        <a (click)="openFile(productCategory.imageFullContentType, productCategory.imageFull)">
+                            <img [src]="'data:' + productCategory.imageFullContentType + ';base64,' + productCategory.imageFull" style="max-width: 100%;" alt="productCategory image"/>
+                        </a>
+                        {{productCategory.imageFullContentType}}, {{byteSize(productCategory.imageFull)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productCategory.imageFullUrl">Image Full Url</span></dt>
+                <dd>
+                    <span>{{productCategory.imageFullUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productCategory.imageThumb">Image Thumb</span></dt>
+                <dd>
+                    <div *ngIf="productCategory.imageThumb">
+                        <a (click)="openFile(productCategory.imageThumbContentType, productCategory.imageThumb)">
+                            <img [src]="'data:' + productCategory.imageThumbContentType + ';base64,' + productCategory.imageThumb" style="max-width: 100%;" alt="productCategory image"/>
+                        </a>
+                        {{productCategory.imageThumbContentType}}, {{byteSize(productCategory.imageThumb)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productCategory.imageThumbUrl">Image Thumb Url</span></dt>
+                <dd>
+                    <span>{{productCategory.imageThumbUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="doraApp.productCategory.shop">Shop</span></dt>
+                <dd>
+                    <div *ngIf="productCategory.shopId">
+                        <a [routerLink]="['/shop', productCategory.shopId, 'view']">{{productCategory.shopShopName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/product-category', productCategory.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

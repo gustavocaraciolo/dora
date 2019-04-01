@@ -1,0 +1,28 @@
+{
+    "doraApp": {
+        "emailBalancer": {
+            "home": {
+                "title": "Email Balancers",
+                "createLabel": "Criar novo Email Balancer",
+                "createOrEditLabel": "Criar ou editar Email Balancer",
+                "search": "Pesquisar por Email Balancer"
+            },
+            "created": "Um novo Email Balancer foi criado com o identificador {{ param }}",
+            "updated": "Um Email Balancer foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Email Balancer foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Email Balancer {{ id }}?"
+            },
+            "detail": {
+                "title": "Email Balancer"
+            },
+            "relayId": "Relay Id",
+            "relayPassword": "Relay Password",
+            "startingCount": "Starting Count",
+            "endingCount": "Ending Count",
+            "provider": "Provider",
+            "relayPort": "Relay Port",
+            "enabled": "Enabled"
+        }
+    }
+}

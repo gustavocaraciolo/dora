@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-employee-timesheet-heading" jhiTranslate="doraApp.employeeTimesheet.home.createOrEditLabel">Create or edit a Employee Timesheet</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!employeeTimesheet.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="employeeTimesheet.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.checkinTime" for="field_checkinTime">Checkin Time</label>
+                    <div class="d-flex">
+                        <input id="field_checkinTime" type="datetime-local" class="form-control" name="checkinTime" [(ngModel)]="checkinTime" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.checkOutTime" for="field_checkOutTime">Check Out Time</label>
+                    <div class="d-flex">
+                        <input id="field_checkOutTime" type="datetime-local" class="form-control" name="checkOutTime" [(ngModel)]="checkOutTime" placeholder="YYYY-MM-DD HH:mm"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.regularHoursWorked" for="field_regularHoursWorked">Regular Hours Worked</label>
+                    <input type="number" class="form-control" name="regularHoursWorked" id="field_regularHoursWorked"
+                        [(ngModel)]="employeeTimesheet.regularHoursWorked" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.overTimeHoursWorked" for="field_overTimeHoursWorked">Over Time Hours Worked</label>
+                    <input type="number" class="form-control" name="overTimeHoursWorked" id="field_overTimeHoursWorked"
+                        [(ngModel)]="employeeTimesheet.overTimeHoursWorked" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.pay" for="field_pay">Pay</label>
+                    <input type="number" class="form-control" name="pay" id="field_pay"
+                        [(ngModel)]="employeeTimesheet.pay" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.profile" for="field_profile">Profile</label>
+                    <select class="form-control" id="field_profile" name="profile" [(ngModel)]="employeeTimesheet.profileId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profileOption.id" *ngFor="let profileOption of profiles; trackBy: trackProfileById">{{profileOption.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="doraApp.employeeTimesheet.shop" for="field_shop">Shop</label>
+                    <select class="form-control" id="field_shop" name="shop" [(ngModel)]="employeeTimesheet.shopId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="shopOption.id" *ngFor="let shopOption of shops; trackBy: trackShopById">{{shopOption.shopName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
