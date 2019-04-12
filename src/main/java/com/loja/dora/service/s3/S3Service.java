@@ -15,9 +15,6 @@ import javax.annotation.PostConstruct;
 public class S3Service {
     private AmazonS3 amazonS3;
 
-    @Value("${amazonProperties.endpointUrl}")
-    private String endpointUrl;
-
     @Value("${amazonProperties.bucketName}")
     private String bucketName;
 
@@ -30,7 +27,7 @@ public class S3Service {
     @PostConstruct
     private void initializeAmazon() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.setAmazonS3(AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1)
+        this.setAmazonS3(AmazonS3ClientBuilder.standard().withRegion(Regions.US_WEST_1)
             .withCredentials(new AWSStaticCredentialsProvider(credentials)).build());
     }
 

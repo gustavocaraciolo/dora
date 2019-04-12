@@ -15,6 +15,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +44,13 @@ public class CompanyResource {
     private final CompanyService companyService;
 
     private final CompanyQueryService companyQueryService;
-    
+
+    @Value("${amazonProperties.endpointUrl}")
+    private String endpointUrl;
+
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
+
     @Autowired
     private S3Service s3Service;
 
@@ -51,8 +58,6 @@ public class CompanyResource {
         this.companyService = companyService;
         this.companyQueryService = companyQueryService;
     }
-
-  
 
     /**
     * GET  /companies/count : count all the companies.
@@ -82,7 +87,7 @@ public class CompanyResource {
         
         CompanyDTO result = companyService.save(companyDTO);
         String fileName = "Company" + result.getId()  + ".png";
-        String companyLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String companyLogoUrl = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setCompanyLogoUrl(companyLogoUrl);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(companyDTO.getCompanyLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
@@ -114,7 +119,7 @@ public class CompanyResource {
         CompanyDTO result = companyService.save(companyDTO);
         if (result.getCompanyLogo() != null) {
         String fileName = "Company" + result.getId()  + ".png";
-        String companyLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String companyLogoUrl = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(companyDTO.getCompanyLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         result.setCompanyLogoUrl(companyLogoUrl);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );

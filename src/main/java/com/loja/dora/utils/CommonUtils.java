@@ -54,7 +54,7 @@ public class CommonUtils {
             meta.setContentType("image/png");
 
             amazonS3.putObject(new PutObjectRequest(
-                "lojadora", fileName, stream, meta)
+                "dora-imagens", fileName, stream, meta)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (Exception e) {
 
@@ -71,7 +71,7 @@ public class CommonUtils {
     public static void deleteFromS3(String fileName, AmazonS3 amazonS3) {
         try {
 
-            amazonS3.deleteObject(new DeleteObjectRequest("lojadora", fileName));
+            amazonS3.deleteObject(new DeleteObjectRequest("dora-imagens", fileName));
         } catch (Exception e) {
             // The call was transmitted successfully, but Amazon S3 couldn't process 
             // it, so it returned an error response.
