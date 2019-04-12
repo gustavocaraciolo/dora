@@ -16,6 +16,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,13 @@ public class ShopResource {
     private final ShopService shopService;
 
     private final ShopQueryService shopQueryService;
-    
+
+    @Value("${amazonProperties.endpointUrl}")
+    private String endpointUrl;
+
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
+
     @Autowired
     ShopChangeService shopChangeService;
     
@@ -98,7 +105,7 @@ public class ShopResource {
         CommonUtils.saveShopChange(shopChangeService, shopDTO.getCompanyId(), "Shop", "New Shop created", shopDTO.getShopName()); 
         
         String fileName = "Shop" + result.getId()  + ".png";
-        String shopLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String shopLogoUrl = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setShopLogoUrl(shopLogoUrl);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(shopDTO.getShopLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
@@ -131,7 +138,7 @@ public class ShopResource {
         CommonUtils.saveShopChange(shopChangeService, shopDTO.getId(), "Shop", "Existing Shop updated", shopDTO.getShopName()); 
        if (shopDTO.getShopLogo() != null) {
         String fileName = "Shop" + result.getId()  + ".png";
-        String shopLogoUrl = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String shopLogoUrl = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setShopLogoUrl(shopLogoUrl);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(shopDTO.getShopLogo()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );

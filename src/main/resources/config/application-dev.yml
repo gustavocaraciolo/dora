@@ -85,7 +85,7 @@ server:
     port: 8080
 
 amazonProperties:
-    endpointUrl: https://s3-us-west-1..amazonaws.com # ${AWS_S3_ENDPOINT}  # https://s3.eu-west-1.amazonaws.com
+    endpointUrl: https://s3-us-west-1.amazonaws.com # ${AWS_S3_ENDPOINT}  # https://s3.eu-west-1.amazonaws.com
     accessKey: AKIAJLVE3KKJNJVEGNVA # ${AWS_S3_ACCESS_KEY} # before hand set you AWS S3 Access Key as Environment Variable
     secretKey: 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 # ${AWS_S3_SECRET_KEY} # before hand set you AWS S3 Access Key as Environment Variable
     bucketName: dora-imagens #  ${AWS_S3_BUCKET_NAME}  # S3 bucketName lojadora

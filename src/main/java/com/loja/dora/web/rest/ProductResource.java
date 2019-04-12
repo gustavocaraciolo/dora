@@ -16,6 +16,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,12 @@ public class ProductResource {
     
     @Autowired
     private S3Service s3Service;
+
+    @Value("${amazonProperties.endpointUrl}")
+    private String endpointUrl;
+
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
     
     public ProductResource(ProductService productService, ProductQueryService productQueryService) {
         this.productService = productService;
@@ -93,7 +100,7 @@ public class ProductResource {
         CommonUtils.saveShopChange(shopChangeService, productDTO.getShopId(), "Product", "New Product created", productDTO.getShopShopName()); 
      
         String fileName = "Product" + result.getId()  + ".png";
-        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String url = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setProductImageFullUrl(url);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageFull()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
@@ -102,7 +109,7 @@ public class ProductResource {
         result2.setProductImageFullContentType(null);
         
         String fileName2 = "ProductThumb" + result.getId()  + ".png";
-        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        String url2 = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName2;
         result2.setProductImageThumbUrl(url2);
         byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageThumb()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
         CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
@@ -136,7 +143,7 @@ public class ProductResource {
         CommonUtils.saveShopChange(shopChangeService, productDTO.getShopId(), "Product", "Existng Product updated", productDTO.getShopShopName()); 
         if (productDTO.getProductImageFull() != null) {
         String fileName = "Product" + result.getId()  + ".png";
-        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String url = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setProductImageFullUrl(url);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageFull()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
@@ -148,7 +155,7 @@ public class ProductResource {
         if (productDTO.getProductImageThumb() != null) {
 
         String fileName2 = "ProductThumb" + result.getId()  + ".png";
-        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        String url2 = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName2;
         ProductDTO result2 = productService.save(result);
         result2.setProductImageThumbUrl(url2);
         byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(productDTO.getProductImageThumb()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);

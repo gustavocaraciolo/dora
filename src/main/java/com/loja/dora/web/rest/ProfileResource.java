@@ -60,17 +60,23 @@ public class ProfileResource {
     RestTemplate restTemplate;
     
     @Autowired
-      UserRepository userRepository;
+    UserRepository userRepository;
     
     @Autowired
     ShopChangeService shopChangeService;
     
     @Autowired
-     S3Service s3Service;
+    S3Service s3Service;
     
     @Value("${application.auth-server.register-url}")
     String registerUrl;
-    
+
+    @Value("${amazonProperties.endpointUrl}")
+    private String endpointUrl;
+
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
+
     @Autowired
     UserService userService;
     
@@ -132,7 +138,7 @@ public class ProfileResource {
         CommonUtils.saveShopChange(shopChangeService, profileDTO.getShopId(), "Profile", "New Profile created", profileDTO.getShopShopName()); 
         
         String fileName = "Profile" + result.getId()  + ".png";
-        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String url = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setFullPhotoUrl(url);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(profileDTO.getFullPhoto()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
@@ -141,7 +147,7 @@ public class ProfileResource {
         result2.setFullPhotoContentType(null);
         
         String fileName2 = "ProfileThumb" + result.getId()  + ".png";
-        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        String url2 = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName2;
         result2.setThumbnailPhotoUrl(url2);
         byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(profileDTO.getThumbnailPhoto()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
         CommonUtils.uploadToS3(imageBytes2,fileName2,s3Service.getAmazonS3() );
@@ -183,7 +189,7 @@ public class ProfileResource {
       
         if (profileDTO.getFullPhoto() != null) {
         String fileName = "Profile" + result.getId()  + ".png";
-        String url = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName;
+        String url = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName;
         result.setFullPhotoUrl(url);
         byte[] imageBytes = CommonUtils.resize(CommonUtils.createImageFromBytes(profileDTO.getFullPhoto()),  Constants.FULL_IMAGE_HEIGHT,  Constants.FULL_IMAGE_WIDTH);
         CommonUtils.uploadToS3(imageBytes,fileName,s3Service.getAmazonS3() );
@@ -196,7 +202,7 @@ public class ProfileResource {
         if (profileDTO.getThumbnailPhoto() != null) {
 
         String fileName2 = "ProfileThumb" + result.getId()  + ".png";
-        String url2 = "https://s3-eu-west-1.amazonaws.com/lojadora/" + fileName2;
+        String url2 = endpointUrl.concat("/").concat(bucketName).concat("/") + fileName2;
         ProfileDTO result2 = profileService.save(result);
         result2.setThumbnailPhotoUrl(url2);
         byte[] imageBytes2 = CommonUtils.resize(CommonUtils.createImageFromBytes(profileDTO.getThumbnailPhoto()),  Constants.THUMBNAIL_HEIGHT,  Constants.THUMBNAIL_WIDTH);
