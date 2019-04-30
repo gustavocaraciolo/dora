@@ -32,7 +32,9 @@
         "skipUserManagement": false,
         "jwtSecretKey": "Zjk1NTVlZDU4Y2M0NTFkZjY1MTAyYzdkZmFkYmFjYzExNTBjNGY3MjA4OWE4MjA0MThiNzliODA3NmQ3YTM4NzllYmMxN2FjMDZiYjk1M2E0ZWJlYjg4MmQxZWQwZWRlNjYyY2Y0NjM2YTNmNjVhNDA1ODZmNjhhN2E0MTIwZjc=",
         "entitySuffix": "",
-        "otherModules": []
+        "otherModules": [],
+        "herokuAppName": "dorapos",
+        "herokuDeployType": "git"
     },
     "entities": []
 }
